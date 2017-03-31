@@ -21,6 +21,6 @@ object GetGitHubProjects {
             .build()
             .create(GetGitHubProjectsService::class.java)
 
-    fun request(page: Int): Single<List<Project>> = SERVICE.getPrpjects(page, LIMIT)
+    fun request(page: Int): Single<List<Project>> = SERVICE.getProjects(page, LIMIT)
 
 }

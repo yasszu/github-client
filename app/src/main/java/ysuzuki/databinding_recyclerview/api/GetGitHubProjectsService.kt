@@ -10,5 +10,5 @@ import retrofit2.http.Query
  */
 interface GetGitHubProjectsService {
     @GET("orgs/googlesamples/repos")
-    fun getPrpjects(@Query("page") page: Int, @Query("per_page") limit: Int): Single<List<Project>>
+    fun getProjects(@Query("page") page: Int, @Query("per_page") limit: Int): Single<List<Project>>
 }
