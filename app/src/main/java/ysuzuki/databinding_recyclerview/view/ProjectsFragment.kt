@@ -17,7 +17,7 @@ class ProjectsFragment: Fragment() {
 
     lateinit var binding: FragmentProjectsBinding
 
-    val viewModel: ProjectsViewModel by lazy { ProjectsViewModel().apply { fetch(1) } }
+    val viewModel: ProjectsViewModel by lazy { ProjectsViewModel().apply { fetch() } }
     val adapter: ProjectsViewAdapter by lazy { ProjectsViewAdapter(viewModel) }
 
     companion object {
@@ -37,8 +37,10 @@ class ProjectsFragment: Fragment() {
     }
 
     fun initRecyclerView() {
+        val layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.addOnScrollListener(viewModel.onScrollListener(layoutManager))
     }
 
 }
