@@ -38,8 +38,7 @@
                 android:layout_below="@+id/title"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_size_body"
-                android:text="@{viewModel.description}"
-                android:visibility="@{viewModel.descriptionVisibility()}"/>
+                android:text="@{viewModel.description ?? @string/blank}" />
             <TextView
                 android:id="@+id/language"
                 android:layout_width="wrap_content"

@@ -1,7 +1,5 @@
 package ysuzuki.databinding_recyclerview.model
 
-import ysuzuki.databinding_recyclerview.model.Owner
-
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */

@@ -1,7 +1,6 @@
 package ysuzuki.databinding_recyclerview.view
 
 import android.databinding.ObservableField
-import android.view.View
 import ysuzuki.databinding_recyclerview.model.Project
 
 /**
@@ -23,5 +22,4 @@ class ProjectViewModel(project: Project) {
         url.set(project.url)
     }
 
-    fun descriptionVisibility()  = if ( description.get().isNullOrBlank()) View.GONE else View.VISIBLE
 }
