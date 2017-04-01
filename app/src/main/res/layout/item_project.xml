@@ -6,13 +6,15 @@
             type="ysuzuki.databinding_recyclerview.view.ProjectViewModel"/>
     </data>
     <RelativeLayout
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"
-        android:background="@drawable/frame_border_bottom">
+        android:background="@drawable/selector_background"
+        android:onClick="@{(v) -> viewModel.openLink(v)}">
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="48dp"

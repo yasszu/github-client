@@ -13,11 +13,12 @@ import ysuzuki.databinding_recyclerview.databinding.FragmentProjectsBinding
  */
 class ProjectsFragment: Fragment() {
 
-    val TITLE = "GoogleSamples"
-
     lateinit var binding: FragmentProjectsBinding
 
+    val TITLE = "GoogleSamples"
+
     val viewModel: ProjectsViewModel by lazy { ProjectsViewModel().apply { fetch() } }
+
     val adapter: ProjectsViewAdapter by lazy { ProjectsViewAdapter(viewModel) }
 
     companion object {
@@ -33,10 +34,10 @@ class ProjectsFragment: Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+        setupRecyclerView()
     }
 
-    fun initRecyclerView() {
+    fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager

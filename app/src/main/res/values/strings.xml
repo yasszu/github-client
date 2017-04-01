@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">databinding-recyclerview</string>
-    <string name="blank">No description.</string>
+    <string name="blank">(No description)</string>
 </resources>

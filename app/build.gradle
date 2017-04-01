@@ -37,6 +37,7 @@ dependencies {
     // Android support libraries.
     compile "com.android.support:appcompat-v7:${android_support_lib_version}"
     compile "com.android.support:design:${android_support_lib_version}"
+    compile "com.android.support:customtabs:${android_support_lib_version}"
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
 
     // Data binding
