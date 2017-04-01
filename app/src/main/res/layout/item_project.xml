@@ -40,7 +40,7 @@
                 android:layout_below="@+id/title"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_size_body"
-                android:text="@{viewModel.description ?? @string/blank}" />
+                android:text="@{viewModel.description ?? @string/blank_description}" />
             <TextView
                 android:id="@+id/language"
                 android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                 android:layout_below="@+id/description"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_body"
-                android:text="@{viewModel.language}" />
+                android:text="@{viewModel.language ?? @string/blank_language}" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>
