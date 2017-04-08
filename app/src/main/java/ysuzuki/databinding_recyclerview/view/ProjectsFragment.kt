@@ -24,8 +24,8 @@ class ProjectsFragment: Fragment() {
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
             if (!s.isNullOrBlank()) {
-                viewModel.resetOrganization(s)
-                activity.title = viewModel.organization
+                viewModel.resetRepositories(s)
+                activity.title = viewModel.qualifiers
             }
             return false
         }
@@ -57,7 +57,7 @@ class ProjectsFragment: Fragment() {
         searchView = (menuItem?.actionView as SearchView).apply {
             setOnQueryTextListener(queryTextListener)
             setIconifiedByDefault(true)
-            queryHint = "GitHub organization..."
+            queryHint = "Search"
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -65,7 +65,7 @@ class ProjectsFragment: Fragment() {
     fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
         viewModel = ProjectsViewModel(layoutManager)
-        activity.title = viewModel.organization
+        activity.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnScrollListener(viewModel.scrollListener)

@@ -6,13 +6,18 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ysuzuki.databinding_recyclerview.BuildConfig
+import ysuzuki.databinding_recyclerview.model.SearchResult
 
 /**
- * Created by Yasuhiro Suzuki on 2017/03/30.
+ * Created by Yasuhiro Suzuki on 2017/04/08.
+ *
+ * See https://developer.github.com/v3/search/#search-repositories
  */
-object GetGitHubProjects {
+object GetTrendingRepos {
 
-    val LIMIT = 10
+    val SORT = "stars"
+    val ORDER = "desc"
+    val LIMIT = 20
 
     val SERVICE: GitHubClientService = Retrofit.Builder()
             .baseUrl(BuildConfig.HOST)
@@ -21,7 +26,6 @@ object GetGitHubProjects {
             .build()
             .create(GitHubClientService::class.java)
 
-    fun request(organization: String, page: Int): Single<List<Project>>
-            = SERVICE.getProjects(organization, page, LIMIT)
-
+    fun request(qualifiers: String, page: Int): Single<SearchResult>
+            = SERVICE.getTrendingRepos(qualifiers, SORT, ORDER, page, LIMIT)
 }

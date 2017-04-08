@@ -5,7 +5,7 @@ import android.databinding.ObservableList
 import android.support.v7.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ysuzuki.databinding_recyclerview.api.GetGitHubProjects
+import ysuzuki.databinding_recyclerview.api.GetTrendingRepos
 import ysuzuki.databinding_recyclerview.model.Project
 import ysuzuki.databinding_recyclerview.util.OnScrollListener
 import ysuzuki.databinding_recyclerview.util.SharedPreference
@@ -15,7 +15,7 @@ import ysuzuki.databinding_recyclerview.util.SharedPreference
  */
 class ProjectsViewModel(layoutManager: LinearLayoutManager) {
 
-    val organization: String get() = SharedPreference.getOrganization()
+    val qualifiers: String get() = SharedPreference.getQualifiers()
 
     var page = 0
         private set
@@ -29,10 +29,10 @@ class ProjectsViewModel(layoutManager: LinearLayoutManager) {
     }
 
     fun fetch() {
-        GetGitHubProjects.request(organization, page++)
+        GetTrendingRepos.request(qualifiers, page++)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({projects -> addViewModel(projects)}, Throwable::printStackTrace)
+                .subscribe({ (_, _, items) -> addViewModel(items)}, Throwable::printStackTrace)
 
     }
 
@@ -40,8 +40,8 @@ class ProjectsViewModel(layoutManager: LinearLayoutManager) {
         projects.forEach { viewModels.add(ProjectViewModel(it)) }
     }
 
-    fun resetOrganization(organization: String) {
-        SharedPreference.saveOrganization(organization)
+    fun resetRepositories(qualifiers: String) {
+        SharedPreference.saveOrganization(qualifiers)
         scrollListener.clear()
         viewModels.clear()
         fetch()
