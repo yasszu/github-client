@@ -1,5 +1,8 @@
-# databinding-recyclerview
-Kotlin + DataBinding + RecyclerView
+# RecyclerView with Databinding
+* Kotlin + DataBinding + RecyclerView
+* Search trending GitHub repositories.
+
+![screenshot](docs/screenshot.png)
 
 ## Prerequisites
 * Android SDK 25
