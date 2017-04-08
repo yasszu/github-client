@@ -11,15 +11,15 @@ import ysuzuki.databinding_recyclerview.databinding.FragmentProjectsBinding
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class ProjectsFragment: Fragment() {
+class RepositoriesFragment : Fragment() {
 
     lateinit var binding: FragmentProjectsBinding
 
     lateinit var searchView: SearchView
 
-    lateinit var viewModel: ProjectsViewModel
+    lateinit var viewModel: RepositoriesViewModel
 
-    val adapter: ProjectsViewAdapter by lazy { ProjectsViewAdapter(viewModel) }
+    val adapter: RepositoriesViewAdapter by lazy { RepositoriesViewAdapter(viewModel) }
 
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
@@ -36,8 +36,8 @@ class ProjectsFragment: Fragment() {
     }
 
     companion object {
-        val TAG = ProjectsFragment::class.java.simpleName!!
-        fun newInstance() = ProjectsFragment()
+        val TAG = RepositoriesFragment::class.java.simpleName!!
+        fun newInstance() = RepositoriesFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -71,7 +71,7 @@ class ProjectsFragment: Fragment() {
 
     fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
-        viewModel = ProjectsViewModel(layoutManager)
+        viewModel = RepositoriesViewModel(layoutManager)
         activity.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager

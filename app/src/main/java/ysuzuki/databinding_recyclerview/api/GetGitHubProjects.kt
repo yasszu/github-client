@@ -1,6 +1,6 @@
 package ysuzuki.databinding_recyclerview.api
 
-import ysuzuki.databinding_recyclerview.model.Project
+import ysuzuki.databinding_recyclerview.model.Repository
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -21,7 +21,7 @@ object GetGitHubProjects {
             .build()
             .create(GitHubClientService::class.java)
 
-    fun request(organization: String, page: Int): Single<List<Project>>
+    fun request(organization: String, page: Int): Single<List<Repository>>
             = SERVICE.getProjects(organization, page, LIMIT)
 
 }

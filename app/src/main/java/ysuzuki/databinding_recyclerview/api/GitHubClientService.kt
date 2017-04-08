@@ -1,6 +1,6 @@
 package ysuzuki.databinding_recyclerview.api
 
-import ysuzuki.databinding_recyclerview.model.Project
+import ysuzuki.databinding_recyclerview.model.Repository
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,7 +15,7 @@ interface GitHubClientService {
     @GET("orgs/{qualifiers}/repos")
     fun getProjects(@Path("qualifiers") organization: String,
                     @Query("page") page: Int,
-                    @Query("per_page") limit: Int): Single<List<Project>>
+                    @Query("per_page") limit: Int): Single<List<Repository>>
 
     @GET("search/repositories")
     fun getTrendingRepos(

@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="ysuzuki.databinding_recyclerview.view.ProjectViewModel"/>
+            type="ysuzuki.databinding_recyclerview.view.RepositoryViewModel"/>
     </data>
     <RelativeLayout
         android:id="@+id/parent_layout"
