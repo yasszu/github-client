@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import ysuzuki.databinding_recyclerview.databinding.ActivityMainBinding
 import ysuzuki.databinding_recyclerview.util.SharedPreference
-import ysuzuki.databinding_recyclerview.view.ProjectsFragment
+import ysuzuki.databinding_recyclerview.view.RepositoriesFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,14 +22,15 @@ class MainActivity : AppCompatActivity() {
 
     fun initToolbar() {
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_home_black_24dp)
     }
 
     fun initFragment() {
-        val tag = ProjectsFragment.TAG
+        val tag = RepositoriesFragment.TAG
         if (supportFragmentManager.findFragmentByTag(tag) == null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.container, ProjectsFragment.newInstance(), tag)
+                    .add(R.id.container, RepositoriesFragment.newInstance(), tag)
                     .commit()
         }
     }

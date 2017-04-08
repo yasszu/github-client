@@ -13,16 +13,26 @@ object SharedPreference {
     lateinit var data: SharedPreferences
 
     val name = BuildConfig.APPLICATION_ID
-
-    val ORGANIZATION = "organization"
+    val ORGANIZATION = "qualifiers"
+    val TRENDING = "trending"
+    val QUALIFIERS = "qualifiers"
 
     fun init(context: Context) {
         data = context.applicationContext.getSharedPreferences(name, Context.MODE_PRIVATE)
     }
 
-    fun saveOrganization(organization: String)
-            = data.edit().putString(ORGANIZATION, organization).apply()
+    fun saveOrganization(organization: String) {
+        data.edit().putString(ORGANIZATION, organization).apply()
+    }
 
-    fun getOrganization() = data.getString(ORGANIZATION, "googlesamples")
+    fun getOrganization() = data.getString(ORGANIZATION, "googlesamples")!!
+
+    fun saveQualifiers(q: String) {
+        data.edit().putString(QUALIFIERS, q).apply()
+    }
+
+    fun getQualifiers() = data.getString(QUALIFIERS, "Android")!!
+
+    fun clearQualifiers() = data.edit().remove(QUALIFIERS).commit()
 
 }

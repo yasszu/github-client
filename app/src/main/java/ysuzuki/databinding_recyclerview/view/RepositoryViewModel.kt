@@ -2,7 +2,7 @@ package ysuzuki.databinding_recyclerview.view
 
 import android.databinding.ObservableField
 import android.net.Uri
-import ysuzuki.databinding_recyclerview.model.Project
+import ysuzuki.databinding_recyclerview.model.Repository
 import android.support.customtabs.CustomTabsIntent
 import android.view.View
 
@@ -10,20 +10,22 @@ import android.view.View
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class ProjectViewModel(project: Project) {
+class RepositoryViewModel(repository: Repository) {
 
     val title: ObservableField<String> = ObservableField()
     val description: ObservableField<String> = ObservableField()
     val avatar: ObservableField<String> = ObservableField()
     val language: ObservableField<String> = ObservableField()
     val url: ObservableField<String> = ObservableField()
+    val stars: ObservableField<String> = ObservableField()
 
     init {
-        title.set(project.name)
-        description.set(project.description)
-        avatar.set(project.owner.avatar_url)
-        language.set(project.language)
-        url.set(project.url)
+        title.set(repository.name)
+        description.set(repository.description)
+        avatar.set(repository.owner.avatar_url)
+        language.set(repository.language)
+        url.set(repository.url)
+        stars.set(repository.starts.toString())
     }
 
     fun openLink(v: View) {

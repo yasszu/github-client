@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="ysuzuki.databinding_recyclerview.view.ProjectViewModel"/>
+            type="ysuzuki.databinding_recyclerview.view.RepositoryViewModel"/>
     </data>
     <RelativeLayout
         android:id="@+id/parent_layout"
@@ -49,6 +49,17 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_body"
                 android:text="@{viewModel.language ?? @string/blank_language}" />
+            <TextView
+                android:id="@+id/stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_default"
+                android:layout_below="@+id/description"
+                android:layout_toRightOf="@+id/language"
+                android:drawableLeft="@drawable/ic_star_black_24dp"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_body"
+                android:text='@{viewModel.stars ?? "0"}' />
         </RelativeLayout>
     </RelativeLayout>
 </layout>

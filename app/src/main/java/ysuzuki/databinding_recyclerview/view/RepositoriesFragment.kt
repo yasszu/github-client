@@ -11,21 +11,21 @@ import ysuzuki.databinding_recyclerview.databinding.FragmentProjectsBinding
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class ProjectsFragment: Fragment() {
+class RepositoriesFragment : Fragment() {
 
     lateinit var binding: FragmentProjectsBinding
 
     lateinit var searchView: SearchView
 
-    lateinit var viewModel: ProjectsViewModel
+    lateinit var viewModel: RepositoriesViewModel
 
-    val adapter: ProjectsViewAdapter by lazy { ProjectsViewAdapter(viewModel) }
+    val adapter: RepositoriesViewAdapter by lazy { RepositoriesViewAdapter(viewModel) }
 
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
             if (!s.isNullOrBlank()) {
-                viewModel.resetOrganization(s)
-                activity.title = viewModel.organization
+                viewModel.resetRepositories(s)
+                activity.title = viewModel.qualifiers
             }
             return false
         }
@@ -36,8 +36,8 @@ class ProjectsFragment: Fragment() {
     }
 
     companion object {
-        val TAG = ProjectsFragment::class.java.simpleName!!
-        fun newInstance() = ProjectsFragment()
+        val TAG = RepositoriesFragment::class.java.simpleName!!
+        fun newInstance() = RepositoriesFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,15 +57,22 @@ class ProjectsFragment: Fragment() {
         searchView = (menuItem?.actionView as SearchView).apply {
             setOnQueryTextListener(queryTextListener)
             setIconifiedByDefault(true)
-            queryHint = "GitHub organization..."
+            queryHint = "Search"
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item?.itemId) {
+            android.R.id.home -> viewModel.clearRepositories()
+            else -> true
+        }
+    }
+
     fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
-        viewModel = ProjectsViewModel(layoutManager)
-        activity.title = viewModel.organization
+        viewModel = RepositoriesViewModel(layoutManager)
+        activity.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnScrollListener(viewModel.scrollListener)
