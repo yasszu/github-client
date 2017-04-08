@@ -3,6 +3,7 @@ package ysuzuki.databinding_recyclerview.view
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ysuzuki.databinding_recyclerview.api.GetTrendingRepos
@@ -33,7 +34,7 @@ class ProjectsViewModel(layoutManager: LinearLayoutManager) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ (_, _, items) -> addViewModel(items)}, Throwable::printStackTrace)
-
+        Log.d("page", page.toString())
     }
 
     fun addViewModel(projects: List<Project>) {
@@ -45,6 +46,14 @@ class ProjectsViewModel(layoutManager: LinearLayoutManager) {
         scrollListener.clear()
         viewModels.clear()
         fetch()
+    }
+
+    fun clearRepositories(): Boolean {
+        SharedPreference.clearQualifiers()
+        scrollListener.clear()
+        viewModels.clear()
+        fetch()
+        return true
     }
 
 }

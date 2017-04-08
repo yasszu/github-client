@@ -17,6 +17,7 @@ class ProjectViewModel(project: Project) {
     val avatar: ObservableField<String> = ObservableField()
     val language: ObservableField<String> = ObservableField()
     val url: ObservableField<String> = ObservableField()
+    val stars: ObservableField<String> = ObservableField()
 
     init {
         title.set(project.name)
@@ -24,6 +25,7 @@ class ProjectViewModel(project: Project) {
         avatar.set(project.owner.avatar_url)
         language.set(project.language)
         url.set(project.url)
+        stars.set(project.starts.toString())
     }
 
     fun openLink(v: View) {

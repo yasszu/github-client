@@ -62,6 +62,13 @@ class ProjectsFragment: Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item?.itemId) {
+            android.R.id.home -> viewModel.clearRepositories()
+            else -> true
+        }
+    }
+
     fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
         viewModel = ProjectsViewModel(layoutManager)

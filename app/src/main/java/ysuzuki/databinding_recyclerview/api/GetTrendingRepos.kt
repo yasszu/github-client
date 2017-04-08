@@ -1,6 +1,5 @@
 package ysuzuki.databinding_recyclerview.api
 
-import ysuzuki.databinding_recyclerview.model.Project
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -17,7 +16,7 @@ object GetTrendingRepos {
 
     val SORT = "stars"
     val ORDER = "desc"
-    val LIMIT = 20
+    val LIMIT = 30
 
     val SERVICE: GitHubClientService = Retrofit.Builder()
             .baseUrl(BuildConfig.HOST)
