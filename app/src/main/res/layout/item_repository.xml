@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="viewModel"
@@ -14,11 +15,13 @@
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"
         android:background="@drawable/selector_background"
-        android:onClick="@{(v) -> viewModel.openLink(v)}">
+        android:onClick="@{viewModel::openLink}">
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="48dp"
-            android:layout_height="48dp"/>
+            android:layout_height="48dp"
+            app:imageUrl="@{viewModel.avatar}"
+            app:placeholder="@{@drawable/ic_account}"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
