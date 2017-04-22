@@ -1,18 +1,22 @@
 package ysuzuki.databinding_recyclerview.api
 
-import ysuzuki.databinding_recyclerview.model.Repository
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ysuzuki.databinding_recyclerview.BuildConfig
+import ysuzuki.databinding_recyclerview.model.SearchResult
 
 /**
- * Created by Yasuhiro Suzuki on 2017/03/30.
+ * Created by Yasuhiro Suzuki on 2017/04/08.
+ *
+ * See https://developer.github.com/v3/search/#search-repositories
  */
-object GetGitHubProjects {
+object GetTrendingRepositories {
 
-    val LIMIT = 10
+    val SORT = "stars"
+    val ORDER = "desc"
+    val LIMIT = 30
 
     val SERVICE: GitHubClientService = Retrofit.Builder()
             .baseUrl(BuildConfig.HOST)
@@ -21,7 +25,6 @@ object GetGitHubProjects {
             .build()
             .create(GitHubClientService::class.java)
 
-    fun request(organization: String, page: Int): Single<List<Repository>>
-            = SERVICE.getProjects(organization, page, LIMIT)
-
+    fun request(qualifiers: String, page: Int): Single<SearchResult>
+            = SERVICE.getTrending(qualifiers, SORT, ORDER, page, LIMIT)
 }

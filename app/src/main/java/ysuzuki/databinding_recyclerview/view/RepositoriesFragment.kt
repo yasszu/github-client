@@ -51,6 +51,11 @@ class RepositoriesFragment : Fragment() {
         setupRecyclerView()
     }
 
+    override fun onDetach() {
+        viewModel.dispose()
+        super.onDetach()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         activity.menuInflater.inflate(R.menu.main, menu)
         val menuItem = menu?.findItem(R.id.search)

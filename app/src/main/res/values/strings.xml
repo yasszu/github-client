@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">databinding-recyclerview</string>
+    <string name="app_name">GitHub Client</string>
     <string name="blank_description">(No description)</string>
     <string name="blank_language">(No language)</string>
 </resources>

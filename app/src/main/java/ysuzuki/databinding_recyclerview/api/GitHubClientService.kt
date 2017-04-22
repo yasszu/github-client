@@ -13,12 +13,12 @@ import ysuzuki.databinding_recyclerview.model.SearchResult
 interface GitHubClientService {
 
     @GET("orgs/{qualifiers}/repos")
-    fun getProjects(@Path("qualifiers") organization: String,
-                    @Query("page") page: Int,
-                    @Query("per_page") limit: Int): Single<List<Repository>>
+    fun getRepositories(@Path("qualifiers") organization: String,
+                        @Query("page") page: Int,
+                        @Query("per_page") limit: Int): Single<List<Repository>>
 
     @GET("search/repositories")
-    fun getTrendingRepos(
+    fun getTrending(
             @Query("q") qualifiers: String,
             @Query("sort") sort: String,
             @Query("order") order: String,

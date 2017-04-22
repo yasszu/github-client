@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SharedPreference.init(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initToolbar()
         initFragment()
