@@ -6,9 +6,9 @@ import ysuzuki.databinding_recyclerview.databinding.ItemRepositoryBinding
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class RepositoryViewHolder(val binding: ItemRepositoryBinding): RecyclerView.ViewHolder(binding.root) {
+class SearchItemViewHolder(val binding: ItemRepositoryBinding): RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(viewModel: RepositoryViewModel) {
+    fun bind(viewModel: SearchItemViewModel) {
         binding.viewModel = viewModel
         binding.executePendingBindings()
     }

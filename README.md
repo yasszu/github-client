@@ -2,7 +2,7 @@
 * Kotlin + DataBinding + RecyclerView
 
 ## Feature
-* Search trending GitHub repositories.  
+* Search trending GitHub search.  
 
 ![screenshot](docs/screenshot.png)
 

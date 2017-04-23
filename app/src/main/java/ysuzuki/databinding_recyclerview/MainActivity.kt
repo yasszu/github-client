@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import ysuzuki.databinding_recyclerview.databinding.ActivityMainBinding
 import ysuzuki.databinding_recyclerview.util.SharedPreference
-import ysuzuki.databinding_recyclerview.view.RepositoriesFragment
+import ysuzuki.databinding_recyclerview.view.SearchFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,10 +26,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initFragment() {
-        val tag = RepositoriesFragment.TAG
+        val tag = SearchFragment.TAG
         if (supportFragmentManager.findFragmentByTag(tag) == null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.container, RepositoriesFragment.newInstance(), tag)
+                    .add(R.id.container, SearchFragment.newInstance(), tag)
                     .commit()
         }
     }

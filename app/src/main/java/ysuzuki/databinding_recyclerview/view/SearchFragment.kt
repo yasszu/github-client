@@ -11,15 +11,15 @@ import ysuzuki.databinding_recyclerview.databinding.FragmentProjectsBinding
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class RepositoriesFragment : Fragment() {
+class SearchFragment : Fragment() {
 
     lateinit var binding: FragmentProjectsBinding
 
     lateinit var searchView: SearchView
 
-    lateinit var viewModel: RepositoriesViewModel
+    lateinit var viewModel: SearchViewModel
 
-    val adapter: RepositoriesViewAdapter by lazy { RepositoriesViewAdapter(viewModel) }
+    val adapter: SearchViewAdapter by lazy { SearchViewAdapter(viewModel) }
 
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
@@ -36,8 +36,8 @@ class RepositoriesFragment : Fragment() {
     }
 
     companion object {
-        val TAG = RepositoriesFragment::class.java.simpleName!!
-        fun newInstance() = RepositoriesFragment()
+        val TAG = SearchFragment::class.java.simpleName!!
+        fun newInstance() = SearchFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -69,14 +69,20 @@ class RepositoriesFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when(item?.itemId) {
-            android.R.id.home -> viewModel.clearRepositories()
+            android.R.id.home -> onClickHome()
             else -> true
         }
     }
 
+    fun onClickHome(): Boolean {
+        viewModel.clearRepositories()
+        activity.title = viewModel.qualifiers
+        return true
+    }
+
     fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
-        viewModel = RepositoriesViewModel(layoutManager)
+        viewModel = SearchViewModel(layoutManager)
         activity.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager

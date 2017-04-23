@@ -10,7 +10,7 @@ import ysuzuki.databinding_recyclerview.model.SearchResult
 /**
  * Created by Yasuhiro Suzuki on 2017/04/08.
  *
- * See https://developer.github.com/v3/search/#search-repositories
+ * See https://developer.github.com/v3/search/#search-search
  */
 object GetTrendingRepositories {
 

@@ -33,6 +33,6 @@ object SharedPreference {
 
     fun getQualifiers() = data.getString(QUALIFIERS, "Android")!!
 
-    fun clearQualifiers() = data.edit().remove(QUALIFIERS).commit()
+    fun clearQualifiers() = data.edit().remove(QUALIFIERS).apply()
 
 }

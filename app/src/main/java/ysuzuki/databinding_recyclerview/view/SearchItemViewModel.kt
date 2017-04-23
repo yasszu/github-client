@@ -10,7 +10,7 @@ import android.view.View
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class RepositoryViewModel(repository: Repository) {
+class SearchItemViewModel(repository: Repository) {
 
     val title: ObservableField<String> = ObservableField()
     val description: ObservableField<String> = ObservableField()

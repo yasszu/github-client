@@ -15,14 +15,14 @@ import ysuzuki.databinding_recyclerview.util.SharedPreference
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class RepositoriesViewModel(layoutManager: LinearLayoutManager) {
+class SearchViewModel(layoutManager: LinearLayoutManager) {
 
     val qualifiers: String get() = SharedPreference.getQualifiers()
 
     var page = 0
         private set
 
-    val viewModels: ObservableList<RepositoryViewModel> = ObservableArrayList()
+    val viewModels: ObservableList<SearchItemViewModel> = ObservableArrayList()
 
     val scrollListener: OnScrollListener = OnScrollListener(layoutManager, { fetch(qualifiers, page++) })
 
@@ -41,7 +41,7 @@ class RepositoriesViewModel(layoutManager: LinearLayoutManager) {
     }
 
     fun addViewModel(repositories: List<Repository>) {
-        repositories.forEach { viewModels.add(RepositoryViewModel(it)) }
+        repositories.forEach { viewModels.add(SearchItemViewModel(it)) }
     }
 
     fun resetRepositories(qualifiers: String) {
@@ -51,12 +51,11 @@ class RepositoriesViewModel(layoutManager: LinearLayoutManager) {
         fetch(qualifiers, page++)
     }
 
-    fun clearRepositories(): Boolean {
+    fun clearRepositories() {
         SharedPreference.clearQualifiers()
         scrollListener.clear()
         viewModels.clear()
         fetch(qualifiers, page++)
-        return true
     }
 
     fun dispose() {
