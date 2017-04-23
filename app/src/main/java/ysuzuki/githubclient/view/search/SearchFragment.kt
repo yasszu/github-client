@@ -6,20 +6,26 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
 import ysuzuki.githubclient.R
-import ysuzuki.githubclient.databinding.FragmentProjectsBinding
+import ysuzuki.githubclient.databinding.FragmentSearchBinding
 import ysuzuki.githubclient.view.SearchViewModel
-import ysuzuki.githubclient.view.search.SearchViewAdapter
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
 class SearchFragment : Fragment() {
 
-    lateinit var binding: FragmentProjectsBinding
+    lateinit var binding: FragmentSearchBinding
 
     lateinit var searchView: SearchView
 
-    lateinit var viewModel: SearchViewModel
+    val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
+
+    val viewModel: SearchViewModel by lazy {
+        SearchViewModel(layoutManager,
+                { binding.progressBar.visibility = View.VISIBLE },
+                { binding.progressBar.visibility = View.INVISIBLE }
+        )
+    }
 
     val adapter: SearchViewAdapter by lazy { SearchViewAdapter(viewModel) }
 
@@ -43,7 +49,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentProjectsBinding.inflate(inflater, container, false)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -60,11 +66,10 @@ class SearchFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         activity.menuInflater.inflate(R.menu.main, menu)
-        val menuItem = menu?.findItem(R.id.search)
-        searchView = (menuItem?.actionView as SearchView).apply {
+        searchView = (menu?.findItem(R.id.search)?.actionView as SearchView).apply {
             setOnQueryTextListener(queryTextListener)
             setIconifiedByDefault(true)
-            queryHint = "Search"
+            queryHint = resources.getString(R.string.search_hint)
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -83,8 +88,6 @@ class SearchFragment : Fragment() {
     }
 
     fun setupRecyclerView() {
-        val layoutManager = LinearLayoutManager(context)
-        viewModel = SearchViewModel(layoutManager)
         activity.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager

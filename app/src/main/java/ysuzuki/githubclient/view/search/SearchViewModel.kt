@@ -17,6 +17,10 @@ import ysuzuki.githubclient.view.search.SearchItemViewModel
  */
 class SearchViewModel(layoutManager: LinearLayoutManager) {
 
+    var onFetchStart: () -> Unit = {}
+
+    var onFetchComplete: () -> Unit = {}
+
     val qualifiers: String get() = SharedPreference.getQualifiers()
 
     var page = 0
@@ -24,7 +28,9 @@ class SearchViewModel(layoutManager: LinearLayoutManager) {
 
     val viewModels: ObservableList<SearchItemViewModel> = ObservableArrayList()
 
-    val scrollListener: OnScrollListener = OnScrollListener(layoutManager, { fetch(qualifiers, page++) })
+    val scrollListener: OnScrollListener = OnScrollListener(
+            layoutManager, { fetch(qualifiers, page++) }
+    )
 
     val disposables = CompositeDisposable()
 
@@ -32,12 +38,30 @@ class SearchViewModel(layoutManager: LinearLayoutManager) {
         fetch(qualifiers, page++)
     }
 
+    constructor(layoutManager: LinearLayoutManager,
+                onFetchStart: () -> Unit,
+                onFetchComplete: () -> Unit) : this(layoutManager) {
+        this.onFetchStart = onFetchStart
+        this.onFetchComplete = onFetchComplete
+    }
+
     fun fetch(qualifiers: String, page: Int) {
+        onFetchStart()
         disposables.add(GetTrendingRepositories
                 .request(qualifiers, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ (_, _, items) -> addViewModel(items)}, Throwable::printStackTrace))
+                .subscribe({ (_, _, items) -> onFetchSuccess(items) }, this::onFetchError))
+    }
+
+    fun onFetchSuccess(repositories: List<Repository>) {
+        onFetchComplete()
+        addViewModel(repositories)
+    }
+
+    fun onFetchError(throwable: Throwable) {
+        onFetchComplete()
+        throwable.printStackTrace()
     }
 
     fun addViewModel(repositories: List<Repository>) {

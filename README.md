@@ -1,4 +1,4 @@
-# Sample of RecyclerView with DataBinding
+# RecyclerView with DataBinding
 * Kotlin + DataBinding + RecyclerView
 
 ## Feature

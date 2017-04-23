@@ -2,4 +2,5 @@
     <string name="app_name">GitHubClient</string>
     <string name="blank_description">(No description)</string>
     <string name="blank_language">(No language)</string>
+    <string name="search_hint">Search</string>
 </resources>
