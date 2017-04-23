@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="ysuzuki.databinding_recyclerview.view.SearchItemViewModel"/>
+            type="ysuzuki.databinding_recyclerview.view.search.SearchItemViewModel"/>
     </data>
     <RelativeLayout
         android:id="@+id/parent_layout"

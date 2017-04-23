@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview.view
+package ysuzuki.databinding_recyclerview.view.search
 
 import android.databinding.ObservableField
 import android.net.Uri

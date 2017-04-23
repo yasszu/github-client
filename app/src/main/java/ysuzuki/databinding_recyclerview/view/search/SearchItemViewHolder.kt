@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview.view
+package ysuzuki.databinding_recyclerview.view.search
 
 import android.support.v7.widget.RecyclerView
 import ysuzuki.databinding_recyclerview.databinding.ItemRepositoryBinding

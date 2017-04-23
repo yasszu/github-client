@@ -1,11 +1,12 @@
-package ysuzuki.databinding_recyclerview
+package ysuzuki.databinding_recyclerview.view
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import ysuzuki.databinding_recyclerview.R
 import ysuzuki.databinding_recyclerview.databinding.ActivityMainBinding
 import ysuzuki.databinding_recyclerview.util.SharedPreference
-import ysuzuki.databinding_recyclerview.view.SearchFragment
+import ysuzuki.databinding_recyclerview.view.search.SearchFragment
 
 
 class MainActivity : AppCompatActivity() {
