@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview.util
+package ysuzuki.githubclient.util
 
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable

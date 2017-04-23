@@ -1,8 +1,8 @@
-package ysuzuki.databinding_recyclerview.view.search
+package ysuzuki.githubclient.view.search
 
 import android.databinding.ObservableField
 import android.net.Uri
-import ysuzuki.databinding_recyclerview.model.Repository
+import ysuzuki.githubclient.model.Repository
 import android.support.customtabs.CustomTabsIntent
 import android.view.View
 

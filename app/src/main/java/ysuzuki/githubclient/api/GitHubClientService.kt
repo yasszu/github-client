@@ -1,11 +1,11 @@
-package ysuzuki.databinding_recyclerview.api
+package ysuzuki.githubclient.api
 
-import ysuzuki.databinding_recyclerview.model.Repository
+import ysuzuki.githubclient.model.Repository
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import ysuzuki.databinding_recyclerview.model.SearchResult
+import ysuzuki.githubclient.model.SearchResult
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.

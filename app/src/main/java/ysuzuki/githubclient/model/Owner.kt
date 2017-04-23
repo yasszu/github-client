@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview.model
+package ysuzuki.githubclient.model
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.

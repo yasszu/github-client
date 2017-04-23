@@ -1,7 +1,7 @@
-package ysuzuki.databinding_recyclerview
+package ysuzuki.githubclient
 
 import android.app.Application
-import ysuzuki.databinding_recyclerview.util.SharedPreference
+import ysuzuki.githubclient.util.SharedPreference
 
 /**
  * Created by Yasuhiro Suzuki on 2017/04/22.

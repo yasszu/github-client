@@ -1,8 +1,8 @@
-package ysuzuki.databinding_recyclerview.util
+package ysuzuki.githubclient.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import ysuzuki.databinding_recyclerview.BuildConfig
+import ysuzuki.githubclient.BuildConfig
 
 
 /**

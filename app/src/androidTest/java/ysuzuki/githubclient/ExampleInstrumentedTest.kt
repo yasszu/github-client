@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview
+package ysuzuki.githubclient
 
 import android.content.Context
 import android.support.test.InstrumentationRegistry

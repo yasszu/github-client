@@ -1,7 +1,7 @@
-package ysuzuki.databinding_recyclerview.view.search
+package ysuzuki.githubclient.view.search
 
 import android.support.v7.widget.RecyclerView
-import ysuzuki.databinding_recyclerview.databinding.ItemRepositoryBinding
+import ysuzuki.githubclient.databinding.ItemRepositoryBinding
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.

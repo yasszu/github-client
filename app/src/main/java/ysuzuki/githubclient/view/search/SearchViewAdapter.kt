@@ -1,13 +1,13 @@
-package ysuzuki.databinding_recyclerview.view.search
+package ysuzuki.githubclient.view.search
 
 import android.databinding.ObservableList
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import ysuzuki.databinding_recyclerview.databinding.ItemRepositoryBinding
-import ysuzuki.databinding_recyclerview.view.SearchViewModel
-import ysuzuki.databinding_recyclerview.view.search.SearchItemViewHolder
-import ysuzuki.databinding_recyclerview.view.search.SearchItemViewModel
+import ysuzuki.githubclient.databinding.ItemRepositoryBinding
+import ysuzuki.githubclient.view.SearchViewModel
+import ysuzuki.githubclient.view.search.SearchItemViewHolder
+import ysuzuki.githubclient.view.search.SearchItemViewModel
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.

@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview.model
+package ysuzuki.githubclient.model
 
 import com.squareup.moshi.Json
 

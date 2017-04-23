@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview.util
+package ysuzuki.githubclient.util
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView

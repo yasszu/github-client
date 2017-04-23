@@ -1,14 +1,14 @@
-package ysuzuki.databinding_recyclerview.view.search
+package ysuzuki.githubclient.view.search
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
-import ysuzuki.databinding_recyclerview.R
-import ysuzuki.databinding_recyclerview.databinding.FragmentProjectsBinding
-import ysuzuki.databinding_recyclerview.view.SearchViewModel
-import ysuzuki.databinding_recyclerview.view.search.SearchViewAdapter
+import ysuzuki.githubclient.R
+import ysuzuki.githubclient.databinding.FragmentProjectsBinding
+import ysuzuki.githubclient.view.SearchViewModel
+import ysuzuki.githubclient.view.search.SearchViewAdapter
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.

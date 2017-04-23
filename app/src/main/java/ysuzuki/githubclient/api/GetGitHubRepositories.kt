@@ -1,11 +1,11 @@
-package ysuzuki.databinding_recyclerview.api
+package ysuzuki.githubclient.api
 
-import ysuzuki.databinding_recyclerview.model.Repository
+import ysuzuki.githubclient.model.Repository
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import ysuzuki.databinding_recyclerview.BuildConfig
+import ysuzuki.githubclient.BuildConfig
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.

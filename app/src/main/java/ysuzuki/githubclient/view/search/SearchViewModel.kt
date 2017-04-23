@@ -1,4 +1,4 @@
-package ysuzuki.databinding_recyclerview.view
+package ysuzuki.githubclient.view
 
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
@@ -6,11 +6,11 @@ import android.support.v7.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import ysuzuki.databinding_recyclerview.api.GetTrendingRepositories
-import ysuzuki.databinding_recyclerview.model.Repository
-import ysuzuki.databinding_recyclerview.util.OnScrollListener
-import ysuzuki.databinding_recyclerview.util.SharedPreference
-import ysuzuki.databinding_recyclerview.view.search.SearchItemViewModel
+import ysuzuki.githubclient.api.GetTrendingRepositories
+import ysuzuki.githubclient.model.Repository
+import ysuzuki.githubclient.util.OnScrollListener
+import ysuzuki.githubclient.util.SharedPreference
+import ysuzuki.githubclient.view.search.SearchItemViewModel
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
