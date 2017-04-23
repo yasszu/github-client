@@ -17,7 +17,7 @@ interface GitHubClientService {
                         @Query("page") page: Int,
                         @Query("per_page") limit: Int): Single<List<Repository>>
 
-    @GET("search/search")
+    @GET("search/repositories")
     fun getTrending(
             @Query("q") qualifiers: String,
             @Query("sort") sort: String,
