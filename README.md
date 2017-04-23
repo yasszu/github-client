@@ -1,8 +1,8 @@
-# RecyclerView with Databinding
+# Sample of RecyclerView with DataBinding
 * Kotlin + DataBinding + RecyclerView
 
 ## Feature
-* Search trending GitHub search.  
+* Search trending GitHub repositories.  
 
 ![screenshot](docs/screenshot.png)
 
