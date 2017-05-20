@@ -22,6 +22,6 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
 
-        assertEquals("ysuzuki.databinding_recyclerview", appContext.packageName)
+        assertEquals("ysuzuki.gihubclient", appContext.packageName)
     }
 }
