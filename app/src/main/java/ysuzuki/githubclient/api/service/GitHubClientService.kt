@@ -1,4 +1,4 @@
-package ysuzuki.githubclient.api
+package ysuzuki.githubclient.api.service
 
 import ysuzuki.githubclient.model.Repository
 import io.reactivex.Single
@@ -13,9 +13,9 @@ import ysuzuki.githubclient.model.SearchResult
 interface GitHubClientService {
 
     @GET("orgs/{qualifiers}/repos")
-    fun getRepositories(@Path("qualifiers") organization: String,
-                        @Query("page") page: Int,
-                        @Query("per_page") limit: Int): Single<List<Repository>>
+    fun getRepos(@Path("qualifiers") organization: String,
+                 @Query("page") page: Int,
+                 @Query("per_page") limit: Int): Single<List<Repository>>
 
     @GET("search/repositories")
     fun getTrending(

@@ -8,27 +8,28 @@ import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
+import ysuzuki.githubclient.util.SharedPreference
 import ysuzuki.githubclient.view.SearchViewModel
 
 /**
  * Created by Yasuhiro Suzuki on 2017/05/20.
  */
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(SearchViewModel::class)
+@PrepareForTest(SearchViewModel::class, SharedPreference::class)
 class SearchViewModelTest {
 
-    lateinit var mockViewModel: SearchViewModel
+    lateinit var mockPreference: SharedPreference
 
     @Before
     fun setUp() {
-        mockViewModel = PowerMockito.mock(SearchViewModel::class.java)
-        Mockito.`when`(mockViewModel.qualifiers).thenReturn("Android")
+        mockPreference = PowerMockito.mock(SharedPreference::class.java)
+        Mockito.`when`(mockPreference.getQualifiers()).thenReturn("Android")
     }
 
     @Test
     @Throws(Exception::class)
     fun getQualifiers_test() {
-        assertEquals(mockViewModel.qualifiers, "Android")
+        assertEquals(mockPreference.getQualifiers(), "Android")
     }
 
 }

@@ -5,6 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ysuzuki.githubclient.BuildConfig
+import ysuzuki.githubclient.api.service.GitHubClientService
 import ysuzuki.githubclient.model.SearchResult
 
 /**
@@ -12,7 +13,7 @@ import ysuzuki.githubclient.model.SearchResult
  *
  * See https://developer.github.com/v3/search/#search-search
  */
-object GetTrendingRepositories {
+object GetTrendingRepos {
 
     val SORT = "stars"
     val ORDER = "desc"

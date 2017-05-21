@@ -3,11 +3,9 @@ package ysuzuki.githubclient.view
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
 import android.support.v7.widget.LinearLayoutManager
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import ysuzuki.githubclient.api.GetTrendingRepositories
 import ysuzuki.githubclient.model.Repository
+import ysuzuki.githubclient.repository.TrendingReposRepository
 import ysuzuki.githubclient.util.OnScrollListener
 import ysuzuki.githubclient.util.SharedPreference
 import ysuzuki.githubclient.view.search.SearchItemViewModel
@@ -28,8 +26,8 @@ class SearchViewModel(layoutManager: LinearLayoutManager) {
 
     val viewModels: ObservableList<SearchItemViewModel> = ObservableArrayList()
 
-    val scrollListener: OnScrollListener = OnScrollListener(
-            layoutManager, { fetch(qualifiers, page++) }
+    val scrollListener: OnScrollListener = OnScrollListener(layoutManager,
+            { fetch(qualifiers, page++) }
     )
 
     val disposables = CompositeDisposable()
@@ -47,11 +45,10 @@ class SearchViewModel(layoutManager: LinearLayoutManager) {
 
     fun fetch(qualifiers: String, page: Int) {
         onFetchStart()
-        disposables.add(GetTrendingRepositories
-                .request(qualifiers, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ (_, _, items) -> onFetchSuccess(items) }, this::onFetchError))
+        val disposable = TrendingReposRepository
+                .findAll(qualifiers,page)
+                .subscribe({ (_, _, items) -> onFetchSuccess(items) }, this::onFetchError)
+        disposables.add(disposable)
     }
 
     fun onFetchSuccess(repositories: List<Repository>) {
