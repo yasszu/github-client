@@ -25,7 +25,7 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
     val adapter: SearchViewAdapter by lazy { SearchViewAdapter(viewModel) }
 
     companion object {
-        val TAG = SearchFragment::class.java.simpleName!!
+        val TAG: String = SearchFragment::class.java.simpleName
         fun newInstance() = SearchFragment()
     }
 
@@ -56,7 +56,7 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when(item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         android.R.id.home -> refreshRepositories()
         else -> true
     }
