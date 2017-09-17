@@ -23,6 +23,8 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
 
     private val disposables = CompositeDisposable()
 
+    private val trendingRepos = TrendingReposRepository
+
     val qualifiers: String get() = SharedPreference.getQualifiers()
 
     var page = 0
@@ -52,7 +54,7 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
 
     private fun requestRepositories(qualifiers: String, page: Int) {
         listener?.onFetchStart()
-        val disposable = TrendingReposRepository
+        val disposable = trendingRepos
                 .find(qualifiers, page)
                 .subscribe(
                         { (_, _, items) -> onFetchSuccess(items) },
@@ -76,17 +78,23 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
     }
 
     fun resetRepositories(qualifiers: String) {
-        SharedPreference.saveOrganization(qualifiers)
         scrollListener.clear()
         items.clear()
+        resetPage()
+        SharedPreference.saveQualifiers(qualifiers)
         requestRepositories(qualifiers, page++)
     }
 
     fun refreshRepositories() {
-        SharedPreference.clearQualifiers()
         scrollListener.clear()
         items.clear()
+        resetPage()
+        SharedPreference.clearQualifiers()
         requestRepositories(qualifiers, page++)
+    }
+
+    private fun resetPage() {
+        page = 0
     }
 
     fun destroy() {

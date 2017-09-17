@@ -10,29 +10,32 @@ import ysuzuki.githubclient.BuildConfig
  */
 object SharedPreference {
 
-    lateinit var data: SharedPreferences
+    lateinit var preferences: SharedPreferences
 
     val name = BuildConfig.APPLICATION_ID
-    val ORGANIZATION = "qualifiers"
+
+    val ORGANIZATION = "organization"
+
     val TRENDING = "trending"
+
     val QUALIFIERS = "qualifiers"
 
     fun init(context: Context) {
-        data = context.applicationContext.getSharedPreferences(name, Context.MODE_PRIVATE)
+        preferences = context.applicationContext.getSharedPreferences(name, Context.MODE_PRIVATE)
     }
 
     fun saveOrganization(organization: String) {
-        data.edit().putString(ORGANIZATION, organization).apply()
+        preferences.edit().putString(ORGANIZATION, organization).apply()
     }
 
-    fun getOrganization() = data.getString(ORGANIZATION, "googlesamples")!!
+    fun getOrganization() = preferences.getString(ORGANIZATION, "googlesamples")!!
 
     fun saveQualifiers(q: String) {
-        data.edit().putString(QUALIFIERS, q).apply()
+        preferences.edit().putString(QUALIFIERS, q).apply()
     }
 
-    fun getQualifiers() = data.getString(QUALIFIERS, "Android")!!
+    fun getQualifiers() = preferences.getString(QUALIFIERS, "Android")!!
 
-    fun clearQualifiers() = data.edit().remove(QUALIFIERS).apply()
+    fun clearQualifiers() = preferences.edit().remove(QUALIFIERS).apply()
 
 }

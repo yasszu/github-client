@@ -15,7 +15,7 @@ class OnScrollListener(val mLayoutManager: LinearLayoutManager,
 
     constructor(mLayoutManager: LinearLayoutManager, onLoad: () -> Unit): this(mLayoutManager, {}, onLoad)
 
-    val mVisibleThreshold = 6
+    val mVisibleThreshold = 4
 
     var previousItemCount = 0
         private set
