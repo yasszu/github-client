@@ -10,7 +10,7 @@ import ysuzuki.githubclient.model.SearchResult
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-interface GitHubClientService {
+interface GitHubService {
 
     @GET("orgs/{qualifiers}/repos")
     fun getRepos(@Path("qualifiers") organization: String,

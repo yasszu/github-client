@@ -5,7 +5,7 @@ import android.databinding.ObservableList
 import android.support.v7.widget.LinearLayoutManager
 import io.reactivex.disposables.CompositeDisposable
 import ysuzuki.githubclient.model.Repository
-import ysuzuki.githubclient.repository.TrendingReposRepository
+import ysuzuki.githubclient.data.TrendingReposRepository
 import ysuzuki.githubclient.util.OnScrollListener
 import ysuzuki.githubclient.util.SharedPreference
 import ysuzuki.githubclient.view.search.SearchItemViewModel
@@ -46,7 +46,7 @@ class SearchViewModel(layoutManager: LinearLayoutManager) {
     fun fetch(qualifiers: String, page: Int) {
         onFetchStart()
         val disposable = TrendingReposRepository
-                .findAll(qualifiers,page)
+                .find(qualifiers,page)
                 .subscribe({ (_, _, items) -> onFetchSuccess(items) }, this::onFetchError)
         disposables.add(disposable)
     }

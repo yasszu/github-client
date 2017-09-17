@@ -31,7 +31,7 @@ class SearchFragment : Fragment() {
 
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
-            if (!s.isNullOrBlank()) {
+            if (!s.isBlank()) {
                 viewModel.resetRepositories(s)
                 activity.title = viewModel.qualifiers
             }
