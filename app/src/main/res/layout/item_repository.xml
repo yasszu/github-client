@@ -1,68 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="viewModel"
-            type="ysuzuki.githubclient.view.search.SearchItemViewModel"/>
+            type="ysuzuki.githubclient.view.search.SearchItemViewModel" />
     </data>
+
     <RelativeLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_small"
+        android:background="@drawable/selector_background"
+        android:onClick="@{viewModel::openLink}"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/margin_default"
         android:paddingRight="@dimen/margin_default"
-        android:background="@drawable/selector_background"
-        android:onClick="@{viewModel::openLink}">
+        android:paddingTop="@dimen/margin_small">
+
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_centerVertical="true"
             app:imageUrl="@{viewModel.avatar}"
-            app:placeholder="@{@drawable/ic_account}"/>
+            app:placeholder="@{@drawable/ic_account}" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/thumbnail"
             android:layout_marginLeft="@dimen/margin_default"
+            android:layout_toRightOf="@+id/thumbnail"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:text="@{viewModel.title}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_title"
-                android:text="@{viewModel.title}" />
+                android:textSize="@dimen/text_size_title" />
+
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:minLines="2"
+                android:text="@{viewModel.description ?? @string/blank_description}"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/text_size_body"
-                android:text="@{viewModel.description ?? @string/blank_description}" />
+                android:textSize="@dimen/text_size_body" />
+
             <TextView
                 android:id="@+id/language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/description"
+                android:text="@{viewModel.language ?? @string/blank_language}"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_size_body"
-                android:text="@{viewModel.language ?? @string/blank_language}" />
+                android:textSize="@dimen/text_size_body" />
+
             <TextView
                 android:id="@+id/stars"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_default"
                 android:layout_below="@+id/description"
+                android:layout_marginLeft="@dimen/margin_default"
                 android:layout_toRightOf="@+id/language"
                 android:drawableLeft="@drawable/ic_star_black_24dp"
+                android:text='@{viewModel.stars ?? "0"}'
                 android:textColor="@color/gray"
-                android:textSize="@dimen/text_size_body"
-                android:text='@{viewModel.stars ?? "0"}' />
+                android:textSize="@dimen/text_size_body" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>

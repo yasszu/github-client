@@ -5,9 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import ysuzuki.githubclient.databinding.ItemRepositoryBinding
-import ysuzuki.githubclient.view.SearchViewModel
-import ysuzuki.githubclient.view.search.SearchItemViewHolder
-import ysuzuki.githubclient.view.search.SearchItemViewModel
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
@@ -15,7 +12,7 @@ import ysuzuki.githubclient.view.search.SearchItemViewModel
 class SearchViewAdapter(val search: SearchViewModel):  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     init {
-        search.viewModels.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<SearchItemViewModel>>() {
+        search.items.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<SearchItemViewModel>>() {
             override fun onChanged(contributorViewModels: ObservableList<SearchItemViewModel>) {
                 notifyDataSetChanged()
             }
@@ -39,13 +36,12 @@ class SearchViewAdapter(val search: SearchViewModel):  RecyclerView.Adapter<Recy
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        val viewModel = search.viewModels[position]
+        val viewModel = search.items[position]
         val viewHolder = holder as SearchItemViewHolder
         viewHolder.bind(viewModel)
     }
 
-    override fun getItemCount(): Int = search.viewModels.size
-
+    override fun getItemCount(): Int = search.items.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent?.context)

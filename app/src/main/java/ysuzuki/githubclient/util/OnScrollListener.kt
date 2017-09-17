@@ -33,14 +33,14 @@ class OnScrollListener(val mLayoutManager: LinearLayoutManager,
         loadNextItems(visibleItemCount, totalItemCount, firstVisibleItems)
     }
 
-    fun resetLoadingFrg(total: Int) {
+    private fun resetLoadingFrg(total: Int) {
         if (mLoading && total > previousItemCount) {
             mLoading = false
             previousItemCount = total
         }
     }
 
-    fun loadNextItems(visible: Int, total: Int, first: Int) {
+    private fun loadNextItems(visible: Int, total: Int, first: Int) {
         if (!mLoading && total <= first + visible + mVisibleThreshold) {
             mLoading = true
             onLoad()
