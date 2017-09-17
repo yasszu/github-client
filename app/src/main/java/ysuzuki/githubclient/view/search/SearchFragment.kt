@@ -57,7 +57,7 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
-        android.R.id.home -> refreshRepositories()
+        android.R.id.home -> refreshItems()
         else -> true
     }
 
@@ -73,8 +73,8 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
         activity.title = viewModel.qualifiers
     }
 
-    fun refreshRepositories(): Boolean {
-        viewModel.refreshRepositories()
+    fun refreshItems(): Boolean {
+        viewModel.refreshItems()
         activity.title = viewModel.qualifiers
         return true
     }
