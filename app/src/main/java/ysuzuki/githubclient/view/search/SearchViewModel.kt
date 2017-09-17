@@ -5,10 +5,10 @@ import android.databinding.ObservableList
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import io.reactivex.disposables.CompositeDisposable
+import ysuzuki.githubclient.data.QualifiersRepository
 import ysuzuki.githubclient.model.Repository
 import ysuzuki.githubclient.data.TrendingReposRepository
 import ysuzuki.githubclient.util.OnScrollListener
-import ysuzuki.githubclient.util.SharedPreference
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
@@ -23,19 +23,21 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
 
     private val disposables = CompositeDisposable()
 
-    private val trendingRepos = TrendingReposRepository
+    private val trendingReposRepository = TrendingReposRepository
 
-    val qualifiers: String get() = SharedPreference.getQualifiers()
+    private val qualifiersRepository = QualifiersRepository
+
+    val qualifiers: String
+        get() = qualifiersRepository.find()
 
     var page = 0
         private set
 
     val items: ObservableList<SearchItemViewModel> = ObservableArrayList()
 
-    val scrollListener: OnScrollListener = OnScrollListener(
-            layoutManager,
-            { requestRepositories(qualifiers, page++) }
-    )
+    val scrollListener: OnScrollListener = OnScrollListener(layoutManager, {
+        requestRepositories(qualifiers, page++)
+    })
 
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
@@ -45,6 +47,7 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
             }
             return false
         }
+
         override fun onQueryTextChange(s: String): Boolean = false
     }
 
@@ -54,12 +57,9 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
 
     private fun requestRepositories(qualifiers: String, page: Int) {
         listener?.onFetchStart()
-        val disposable = trendingRepos
+        val disposable = trendingReposRepository
                 .find(qualifiers, page)
-                .subscribe(
-                        { (_, _, items) -> onFetchSuccess(items) },
-                        this::onFetchError
-                )
+                .subscribe({ (_, _, items) -> onFetchSuccess(items) }, this::onFetchError)
         disposables.add(disposable)
     }
 
@@ -81,7 +81,7 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
         scrollListener.clear()
         items.clear()
         resetPage()
-        SharedPreference.saveQualifiers(qualifiers)
+        qualifiersRepository.save(qualifiers)
         requestRepositories(qualifiers, page++)
     }
 
@@ -89,7 +89,7 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
         scrollListener.clear()
         items.clear()
         resetPage()
-        SharedPreference.clearQualifiers()
+        qualifiersRepository.clear()
         requestRepositories(qualifiers, page++)
     }
 

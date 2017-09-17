@@ -1,7 +1,7 @@
 package ysuzuki.githubclient
 
 import android.app.Application
-import ysuzuki.githubclient.util.SharedPreference
+import ysuzuki.githubclient.service.SharedPreference
 
 /**
  * Created by Yasuhiro Suzuki on 2017/04/22.

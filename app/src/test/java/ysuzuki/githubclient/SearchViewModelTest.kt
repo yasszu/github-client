@@ -8,7 +8,7 @@ import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import ysuzuki.githubclient.util.SharedPreference
+import ysuzuki.githubclient.service.SharedPreference
 import ysuzuki.githubclient.view.search.SearchViewModel
 
 /**
