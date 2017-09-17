@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import ysuzuki.githubclient.R
 import ysuzuki.githubclient.databinding.ActivityMainBinding
-import ysuzuki.githubclient.util.SharedPreference
 import ysuzuki.githubclient.view.search.SearchFragment
+import ysuzuki.githubclient.extention.addFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,22 +17,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initToolbar()
-        initFragment()
+        addFragment(SearchFragment.TAG, SearchFragment.newInstance())
     }
 
     fun initToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_home_black_24dp)
-    }
-
-    fun initFragment() {
-        val tag = SearchFragment.TAG
-        if (supportFragmentManager.findFragmentByTag(tag) == null) {
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.container, SearchFragment.newInstance(), tag)
-                    .commit()
-        }
     }
 
 }

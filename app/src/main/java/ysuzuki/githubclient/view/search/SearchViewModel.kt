@@ -1,86 +1,106 @@
-package ysuzuki.githubclient.view
+package ysuzuki.githubclient.view.search
 
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SearchView
 import io.reactivex.disposables.CompositeDisposable
+import ysuzuki.githubclient.data.QualifiersRepository
 import ysuzuki.githubclient.model.Repository
 import ysuzuki.githubclient.data.TrendingReposRepository
 import ysuzuki.githubclient.util.OnScrollListener
-import ysuzuki.githubclient.util.SharedPreference
-import ysuzuki.githubclient.view.search.SearchItemViewModel
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class SearchViewModel(layoutManager: LinearLayoutManager) {
+class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener?) {
 
-    var onFetchStart: () -> Unit = {}
+    interface Listener {
+        fun onFetchStart()
+        fun onFetchComplete()
+        fun onQueryTextSubmit()
+    }
 
-    var onFetchComplete: () -> Unit = {}
+    private val disposables = CompositeDisposable()
 
-    val qualifiers: String get() = SharedPreference.getQualifiers()
+    private val trendingReposRepository = TrendingReposRepository
+
+    private val qualifiersRepository = QualifiersRepository
+
+    val qualifiers: String
+        get() = qualifiersRepository.find()
 
     var page = 0
         private set
 
-    val viewModels: ObservableList<SearchItemViewModel> = ObservableArrayList()
+    val items: ObservableList<SearchItemViewModel> = ObservableArrayList()
 
-    val scrollListener: OnScrollListener = OnScrollListener(layoutManager,
-            { fetch(qualifiers, page++) }
-    )
+    val scrollListener: OnScrollListener = OnScrollListener(layoutManager, {
+        requestRepositories(qualifiers, page++)
+    })
 
-    val disposables = CompositeDisposable()
+    val queryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(s: String): Boolean {
+            if (!s.isBlank()) {
+                resetRepositories(s)
+                listener?.onQueryTextSubmit()
+            }
+            return false
+        }
 
-    init {
-        fetch(qualifiers, page++)
+        override fun onQueryTextChange(s: String): Boolean = false
     }
 
-    constructor(layoutManager: LinearLayoutManager,
-                onFetchStart: () -> Unit,
-                onFetchComplete: () -> Unit) : this(layoutManager) {
-        this.onFetchStart = onFetchStart
-        this.onFetchComplete = onFetchComplete
+    fun fetch() {
+        requestRepositories(qualifiers, page++)
     }
 
-    fun fetch(qualifiers: String, page: Int) {
-        onFetchStart()
-        val disposable = TrendingReposRepository
-                .find(qualifiers,page)
+    private fun requestRepositories(qualifiers: String, page: Int) {
+        listener?.onFetchStart()
+        val disposable = trendingReposRepository
+                .find(qualifiers, page)
                 .subscribe({ (_, _, items) -> onFetchSuccess(items) }, this::onFetchError)
         disposables.add(disposable)
     }
 
-    fun onFetchSuccess(repositories: List<Repository>) {
-        onFetchComplete()
+    private fun onFetchSuccess(repositories: List<Repository>) {
+        listener?.onFetchComplete()
         addViewModel(repositories)
     }
 
-    fun onFetchError(throwable: Throwable) {
-        onFetchComplete()
+    private fun onFetchError(throwable: Throwable) {
+        listener?.onFetchComplete()
         throwable.printStackTrace()
     }
 
-    fun addViewModel(repositories: List<Repository>) {
-        repositories.forEach { viewModels.add(SearchItemViewModel(it)) }
+    private fun addViewModel(repositories: List<Repository>) {
+        repositories.forEach { items.add(SearchItemViewModel(it)) }
     }
 
     fun resetRepositories(qualifiers: String) {
-        SharedPreference.saveOrganization(qualifiers)
         scrollListener.clear()
-        viewModels.clear()
-        fetch(qualifiers, page++)
+        items.clear()
+        resetPage()
+        qualifiersRepository.save(qualifiers)
+        requestRepositories(qualifiers, page++)
     }
 
-    fun clearRepositories() {
-        SharedPreference.clearQualifiers()
+    fun refreshRepositories() {
         scrollListener.clear()
-        viewModels.clear()
-        fetch(qualifiers, page++)
+        items.clear()
+        resetPage()
+        qualifiersRepository.clear()
+        requestRepositories(qualifiers, page++)
     }
 
-    fun dispose() {
+    private fun resetPage() {
+        page = 0
+    }
+
+    fun destroy() {
         disposables.dispose()
+        scrollListener.clear()
+        listener = null
     }
 
 }
