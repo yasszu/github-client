@@ -13,9 +13,10 @@ import ysuzuki.githubclient.model.SearchResult
 interface GitHubService {
 
     @GET("orgs/{qualifiers}/repos")
-    fun getRepos(@Path("qualifiers") organization: String,
-                 @Query("page") page: Int,
-                 @Query("per_page") limit: Int): Single<List<Repository>>
+    fun getRepos(
+            @Path("qualifiers") organization: String,
+            @Query("page") page: Int,
+            @Query("per_page") limit: Int): Single<List<Repository>>
 
     @GET("search/repositories")
     fun getTrending(

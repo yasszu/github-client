@@ -5,8 +5,11 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
+import ysuzuki.githubclient.MyApplication
 import ysuzuki.githubclient.R
 import ysuzuki.githubclient.databinding.FragmentSearchBinding
+import ysuzuki.githubclient.util.OnScrollListener
+import javax.inject.Inject
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
@@ -14,13 +17,17 @@ import ysuzuki.githubclient.databinding.FragmentSearchBinding
  */
 class SearchFragment : Fragment(), SearchViewModel.Listener {
 
+    @Inject lateinit var viewModel: SearchViewModel
+
     lateinit var binding: FragmentSearchBinding
 
     lateinit var searchView: SearchView
 
     val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
 
-    val viewModel: SearchViewModel by lazy { SearchViewModel(layoutManager, this) }
+    val scrollListener: OnScrollListener by lazy {
+        OnScrollListener(layoutManager, { viewModel.fetch() })
+    }
 
     val adapter: SearchViewAdapter by lazy { SearchViewAdapter(viewModel) }
 
@@ -31,8 +38,10 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
+        MyApplication.appComponent.inject(this)
         setHasOptionsMenu(true)
-        setupRecyclerView()
+        initRecyclerView()
+        initViewModel()
         return binding.root
     }
 
@@ -57,7 +66,7 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
-        android.R.id.home -> refreshRepositories()
+        android.R.id.home -> refreshItems()
         else -> true
     }
 
@@ -73,17 +82,21 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
         activity.title = viewModel.qualifiers
     }
 
-    fun refreshRepositories(): Boolean {
-        viewModel.refreshRepositories()
+    fun refreshItems(): Boolean {
+        viewModel.refreshItems()
         activity.title = viewModel.qualifiers
         return true
     }
 
-    fun setupRecyclerView() {
+    fun initRecyclerView() {
         activity.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.addOnScrollListener(viewModel.scrollListener)
+        binding.recyclerView.addOnScrollListener(scrollListener)
+    }
+
+    fun initViewModel() {
+        viewModel.listener = this
     }
 
 }
