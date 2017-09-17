@@ -1,13 +1,12 @@
 package ysuzuki.githubclient.data
 
 import ysuzuki.githubclient.data.local.QualifiersDataSource
+import javax.inject.Inject
 
 /**
  * Created by Yasuhiro Suzuki on 2017/09/17.
  */
-object QualifiersRepository {
-
-    private val dataSource = QualifiersDataSource
+class QualifiersRepository @Inject constructor(val dataSource: QualifiersDataSource) {
 
     fun find(): String = dataSource.find()
 

@@ -1,13 +1,14 @@
 package ysuzuki.githubclient.data.local
 
-import ysuzuki.githubclient.service.SharedPreference
+import android.content.SharedPreferences
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Yasuhiro Suzuki on 2017/09/17.
  */
-object QualifiersDataSource {
-
-    private val preferences = SharedPreference.preferences
+@Singleton
+class QualifiersDataSource @Inject constructor(val preferences: SharedPreferences) {
 
     private val QUALIFIERS = "qualifiers"
 

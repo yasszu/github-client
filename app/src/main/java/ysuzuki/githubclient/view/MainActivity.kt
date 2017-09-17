@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import ysuzuki.githubclient.R
 import ysuzuki.githubclient.databinding.ActivityMainBinding
-import ysuzuki.githubclient.view.search.SearchFragment
 import ysuzuki.githubclient.extention.addFragment
+import ysuzuki.githubclient.view.search.SearchFragment
 
 
 class MainActivity : AppCompatActivity() {

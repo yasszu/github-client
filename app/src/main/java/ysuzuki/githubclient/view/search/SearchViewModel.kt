@@ -2,18 +2,19 @@ package ysuzuki.githubclient.view.search
 
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import io.reactivex.disposables.CompositeDisposable
 import ysuzuki.githubclient.data.QualifiersRepository
-import ysuzuki.githubclient.model.Repository
 import ysuzuki.githubclient.data.TrendingReposRepository
-import ysuzuki.githubclient.util.OnScrollListener
+import ysuzuki.githubclient.model.Repository
+import javax.inject.Inject
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener?) {
+class SearchViewModel @Inject constructor(
+        val trendingReposRepository: TrendingReposRepository,
+        val qualifiersRepository: QualifiersRepository) {
 
     interface Listener {
         fun onFetchStart()
@@ -23,9 +24,7 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
 
     private val disposables = CompositeDisposable()
 
-    private val trendingReposRepository = TrendingReposRepository
-
-    private val qualifiersRepository = QualifiersRepository
+    var listener: Listener? = null
 
     val qualifiers: String
         get() = qualifiersRepository.find()
@@ -34,10 +33,6 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
         private set
 
     val items: ObservableList<SearchItemViewModel> = ObservableArrayList()
-
-    val scrollListener: OnScrollListener = OnScrollListener(layoutManager, {
-        requestItems(qualifiers, page++)
-    })
 
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
@@ -78,7 +73,6 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
     }
 
     fun resetItems(qualifiers: String) {
-        scrollListener.clear()
         items.clear()
         resetPage()
         qualifiersRepository.save(qualifiers)
@@ -86,7 +80,6 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
     }
 
     fun refreshItems() {
-        scrollListener.clear()
         items.clear()
         resetPage()
         qualifiersRepository.clear()
@@ -99,7 +92,6 @@ class SearchViewModel(layoutManager: LinearLayoutManager, var listener: Listener
 
     fun destroy() {
         disposables.dispose()
-        scrollListener.clear()
         listener = null
     }
 
