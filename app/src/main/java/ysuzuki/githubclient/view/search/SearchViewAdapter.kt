@@ -9,10 +9,10 @@ import ysuzuki.githubclient.databinding.ItemRepositoryBinding
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class SearchViewAdapter(val search: SearchViewModel):  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchViewAdapter(val viewModel: SearchViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     init {
-        search.items.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<SearchItemViewModel>>() {
+        viewModel.addListChangeCallback(object : ObservableList.OnListChangedCallback<ObservableList<SearchItemViewModel>>() {
             override fun onChanged(contributorViewModels: ObservableList<SearchItemViewModel>) {
                 notifyDataSetChanged()
             }
@@ -36,16 +36,27 @@ class SearchViewAdapter(val search: SearchViewModel):  RecyclerView.Adapter<Recy
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        val viewModel = search.items[position]
+        val viewModel = viewModel.items[position]
         val viewHolder = holder as SearchItemViewHolder
         viewHolder.bind(viewModel)
     }
 
-    override fun getItemCount(): Int = search.items.size
+    override fun getItemCount(): Int = viewModel.items.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent?.context)
         val binding = ItemRepositoryBinding.inflate(inflater, parent, false)
         return SearchItemViewHolder(binding)
     }
+
+    class SearchItemViewHolder(val binding: ItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(viewModel: SearchItemViewModel) {
+            binding.viewModel = viewModel
+            binding.executePendingBindings()
+        }
+
+    }
+
 }
+

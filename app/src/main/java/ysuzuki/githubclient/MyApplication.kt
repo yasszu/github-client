@@ -8,14 +8,16 @@ import ysuzuki.githubclient.di.DaggerAppComponent
 /**
  * Created by Yasuhiro Suzuki on 2017/04/22.
  */
-class MyApplication: Application() {
+class MyApplication : Application() {
 
-    companion object {
-        lateinit var appComponent: AppComponent
-    }
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
+        initComponents()
+    }
+
+    private fun initComponents() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
