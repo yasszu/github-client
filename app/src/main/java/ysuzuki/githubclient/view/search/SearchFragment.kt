@@ -15,9 +15,10 @@ import javax.inject.Inject
  * Created by Yasuhiro Suzuki on 2017/03/30.
  *
  */
-class SearchFragment : Fragment(), SearchViewModel.Listener {
+class SearchFragment : Fragment() {
 
-    @Inject lateinit var viewModel: SearchViewModel
+    @Inject
+    lateinit var viewModel: SearchViewModel
 
     lateinit var binding: FragmentSearchBinding
 
@@ -37,11 +38,11 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        (context.applicationContext as MyApplication).appComponent.inject(this)
         binding = FragmentSearchBinding.inflate(inflater, container, false)
-        MyApplication.appComponent.inject(this)
         setHasOptionsMenu(true)
-        initRecyclerView()
         initViewModel()
+        initRecyclerView()
         return binding.root
     }
 
@@ -70,22 +71,17 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
         else -> true
     }
 
-    override fun onFetchStart() {
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
-    override fun onFetchComplete() {
-        binding.progressBar.visibility = View.INVISIBLE
-    }
-
-    override fun onQueryTextSubmit() {
-        activity.title = viewModel.qualifiers
-    }
-
     fun refreshItems(): Boolean {
         viewModel.refreshItems()
         activity.title = viewModel.qualifiers
         return true
+    }
+
+    fun initViewModel() {
+        binding.viewModel = viewModel
+        viewModel.onQueryTextSubmit = { query ->
+            activity.title = query
+        }
     }
 
     fun initRecyclerView() {
@@ -93,10 +89,6 @@ class SearchFragment : Fragment(), SearchViewModel.Listener {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnScrollListener(scrollListener)
-    }
-
-    fun initViewModel() {
-        viewModel.listener = this
     }
 
 }

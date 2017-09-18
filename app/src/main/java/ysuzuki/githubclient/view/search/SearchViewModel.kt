@@ -1,12 +1,15 @@
 package ysuzuki.githubclient.view.search
 
 import android.databinding.ObservableArrayList
+import android.databinding.ObservableField
 import android.databinding.ObservableList
+import android.databinding.ObservableList.OnListChangedCallback
 import android.support.v7.widget.SearchView
 import io.reactivex.disposables.CompositeDisposable
 import ysuzuki.githubclient.data.QualifiersRepository
 import ysuzuki.githubclient.data.TrendingReposRepository
 import ysuzuki.githubclient.model.Repository
+import ysuzuki.githubclient.model.SearchResult
 import javax.inject.Inject
 
 /**
@@ -16,15 +19,9 @@ class SearchViewModel @Inject constructor(
         val trendingReposRepository: TrendingReposRepository,
         val qualifiersRepository: QualifiersRepository) {
 
-    interface Listener {
-        fun onFetchStart()
-        fun onFetchComplete()
-        fun onQueryTextSubmit()
-    }
-
     private val disposables = CompositeDisposable()
 
-    var listener: Listener? = null
+    var onQueryTextSubmit: (q: String) -> Unit = {}
 
     val qualifiers: String
         get() = qualifiersRepository.find()
@@ -34,11 +31,13 @@ class SearchViewModel @Inject constructor(
 
     val items: ObservableList<SearchItemViewModel> = ObservableArrayList()
 
+    val progress: ObservableField<Boolean> = ObservableField()
+
     val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(s: String): Boolean {
             if (!s.isBlank()) {
                 resetItems(s)
-                listener?.onQueryTextSubmit()
+                onQueryTextSubmit(s)
             }
             return false
         }
@@ -46,30 +45,15 @@ class SearchViewModel @Inject constructor(
         override fun onQueryTextChange(s: String): Boolean = false
     }
 
+    private var listChangeCallback: OnListChangedCallback<ObservableList<SearchItemViewModel>>? = null
+
+    fun addListChangeCallback(callback: OnListChangedCallback<ObservableList<SearchItemViewModel>>) {
+        listChangeCallback = callback
+        items.addOnListChangedCallback(callback)
+    }
+
     fun fetch() {
         requestItems(qualifiers, page++)
-    }
-
-    private fun requestItems(qualifiers: String, page: Int) {
-        listener?.onFetchStart()
-        val disposable = trendingReposRepository
-                .find(qualifiers, page)
-                .subscribe({ (_, _, items) -> onFetchSuccess(items) }, this::onFetchError)
-        disposables.add(disposable)
-    }
-
-    private fun onFetchSuccess(repositories: List<Repository>) {
-        listener?.onFetchComplete()
-        addViewModel(repositories)
-    }
-
-    private fun onFetchError(throwable: Throwable) {
-        listener?.onFetchComplete()
-        throwable.printStackTrace()
-    }
-
-    private fun addViewModel(repositories: List<Repository>) {
-        repositories.forEach { items.add(SearchItemViewModel(it)) }
     }
 
     fun resetItems(qualifiers: String) {
@@ -86,13 +70,43 @@ class SearchViewModel @Inject constructor(
         requestItems(qualifiers, page++)
     }
 
+    private fun requestItems(qualifiers: String, page: Int) {
+        showProgressBar()
+        val disposable = trendingReposRepository
+                .find(qualifiers, page)
+                .subscribe(this::onFetchSuccess, this::onFetchError)
+        disposables.add(disposable)
+    }
+
+    private fun onFetchSuccess(result: SearchResult) {
+        dismissProgressBar()
+        addViewModel(result.items)
+    }
+
+    private fun onFetchError(throwable: Throwable) {
+        dismissProgressBar()
+        throwable.printStackTrace()
+    }
+
+    private fun addViewModel(repositories: List<Repository>) {
+        repositories.forEach { items.add(SearchItemViewModel(it)) }
+    }
+
+    private fun showProgressBar() {
+        progress.set(true)
+    }
+
+    private fun dismissProgressBar() {
+        progress.set(false)
+    }
+
     private fun resetPage() {
         page = 0
     }
 
     fun destroy() {
-        disposables.dispose()
-        listener = null
+        disposables.clear()
+        listChangeCallback?.also { items.removeOnListChangedCallback(it) }
     }
 
 }
