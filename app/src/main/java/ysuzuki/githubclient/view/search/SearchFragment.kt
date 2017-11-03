@@ -20,24 +20,28 @@ class SearchFragment : Fragment() {
     @Inject
     lateinit var viewModel: SearchViewModel
 
-    lateinit var binding: FragmentSearchBinding
+    private lateinit var binding: FragmentSearchBinding
 
-    lateinit var searchView: SearchView
+    private lateinit var searchView: SearchView
 
-    val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
+    private val layoutManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(context)
+    }
 
-    val scrollListener: OnScrollListener by lazy {
+    private val scrollListener: OnScrollListener by lazy {
         OnScrollListener(layoutManager, { viewModel.fetch() })
     }
 
-    val adapter: SearchViewAdapter by lazy { SearchViewAdapter(viewModel) }
+    private val adapter: SearchViewAdapter by lazy {
+        SearchViewAdapter(viewModel)
+    }
 
     companion object {
         val TAG: String = SearchFragment::class.java.simpleName
         fun newInstance() = SearchFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         (context.applicationContext as MyApplication).appComponent.inject(this)
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
@@ -51,9 +55,9 @@ class SearchFragment : Fragment() {
         viewModel.fetch()
     }
 
-    override fun onDetach() {
-        viewModel.destroy()
-        super.onDetach()
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clear()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -71,20 +75,20 @@ class SearchFragment : Fragment() {
         else -> true
     }
 
-    fun refreshItems(): Boolean {
+    private fun refreshItems(): Boolean {
         viewModel.refreshItems()
         activity.title = viewModel.qualifiers
         return true
     }
 
-    fun initViewModel() {
+    private fun initViewModel() {
         binding.viewModel = viewModel
         viewModel.onQueryTextSubmit = { query ->
             activity.title = query
         }
     }
 
-    fun initRecyclerView() {
+    private fun initRecyclerView() {
         activity.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager

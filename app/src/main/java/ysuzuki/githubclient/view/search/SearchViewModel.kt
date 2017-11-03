@@ -104,7 +104,7 @@ class SearchViewModel @Inject constructor(
         page = 0
     }
 
-    fun destroy() {
+    fun clear() {
         disposables.clear()
         listChangeCallback?.also { items.removeOnListChangedCallback(it) }
     }
