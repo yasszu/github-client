@@ -1,4 +1,4 @@
-# RecyclerView with DataBinding
+# Github client
 * Kotlin + DataBinding + RecyclerView
 
 ## Feature
