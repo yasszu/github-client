@@ -42,7 +42,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        (context.applicationContext as MyApplication).appComponent.inject(this)
+        (context?.applicationContext as MyApplication).appComponent.inject(this)
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         initViewModel()
@@ -50,7 +50,7 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetch()
     }
@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        activity.menuInflater.inflate(R.menu.main, menu)
+        requireActivity().menuInflater.inflate(R.menu.main, menu)
         searchView = (menu?.findItem(R.id.search)?.actionView as SearchView).apply {
             setOnQueryTextListener(viewModel.queryTextListener)
             setIconifiedByDefault(true)
@@ -77,19 +77,19 @@ class SearchFragment : Fragment() {
 
     private fun refreshItems(): Boolean {
         viewModel.refreshItems()
-        activity.title = viewModel.qualifiers
+        activity?.title = viewModel.qualifiers
         return true
     }
 
     private fun initViewModel() {
         binding.viewModel = viewModel
         viewModel.onQueryTextSubmit = { query ->
-            activity.title = query
+            activity?.title = query
         }
     }
 
     private fun initRecyclerView() {
-        activity.title = viewModel.qualifiers
+        activity?.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnScrollListener(scrollListener)
