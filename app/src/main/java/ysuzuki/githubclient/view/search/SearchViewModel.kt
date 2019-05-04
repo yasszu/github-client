@@ -5,19 +5,22 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableList
 import androidx.databinding.ObservableList.OnListChangedCallback
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import io.reactivex.disposables.CompositeDisposable
 import ysuzuki.githubclient.data.QualifiersRepository
 import ysuzuki.githubclient.data.TrendingReposRepository
 import ysuzuki.githubclient.model.Repository
 import ysuzuki.githubclient.model.SearchResult
+import java.lang.Exception
 import javax.inject.Inject
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class SearchViewModel @Inject constructor(
+class SearchViewModel constructor(
         val trendingReposRepository: TrendingReposRepository,
-        val qualifiersRepository: QualifiersRepository) {
+        val qualifiersRepository: QualifiersRepository) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
@@ -89,7 +92,9 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun addViewModel(repositories: List<Repository>) {
-        repositories.forEach { items.add(SearchItemViewModel(it)) }
+        repositories.forEach {
+            items.add(SearchItemViewModel(it))
+        }
     }
 
     private fun showProgressBar() {
@@ -104,9 +109,27 @@ class SearchViewModel @Inject constructor(
         page = 0
     }
 
-    fun clear() {
+    override fun onCleared() {
+        super.onCleared()
         disposables.clear()
         listChangeCallback?.also { items.removeOnListChangedCallback(it) }
     }
 
+}
+
+class SearchViewModelFactory @Inject constructor(
+        val trendingReposRepository: TrendingReposRepository,
+        val qualifiersRepository: QualifiersRepository) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
+            try {
+                @Suppress("UNCHECKED_CAST")
+                return SearchViewModel(trendingReposRepository, qualifiersRepository) as T
+            } catch (e: Exception) {
+                throw RuntimeException(e)
+            }
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

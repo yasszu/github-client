@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
 import android.view.*
+import androidx.lifecycle.ViewModelProviders
 import ysuzuki.githubclient.MyApplication
 import ysuzuki.githubclient.R
 import ysuzuki.githubclient.databinding.FragmentSearchBinding
@@ -18,7 +19,11 @@ import javax.inject.Inject
 class SearchFragment : Fragment() {
 
     @Inject
-    lateinit var viewModel: SearchViewModel
+    lateinit var viewModelProvider: SearchViewModelFactory
+
+    val viewModel: SearchViewModel by lazy {
+        ViewModelProviders.of(this, viewModelProvider).get(SearchViewModel::class.java)
+    }
 
     private lateinit var binding: FragmentSearchBinding
 
@@ -53,11 +58,6 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetch()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.clear()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

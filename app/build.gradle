@@ -12,6 +12,8 @@ def localProperties() {
 
 def localHost = localProperties().getProperty("local_host")
 
+def lifecycle_version = "2.0.0"
+
 android {
 
     compileSdkVersion 28
@@ -68,12 +70,13 @@ dependencies {
 
     // Android support libraries.
     implementation 'androidx.core:core-ktx:1.0.1'
-
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
-
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    implementation 'com.google.android.material:material:1.0.0'
 
     // Data binding
     kapt 'androidx.databinding:databinding-compiler:3.4.0'

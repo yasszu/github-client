@@ -8,7 +8,7 @@ import javax.inject.Singleton
  * Created by Yasuhiro Suzuki on 2017/09/17.
  */
 @Singleton
-@Component(modules = arrayOf(AppModule::class))
+@Component(modules = [AppModule::class])
 interface AppComponent {
 
     fun inject(fragment: SearchFragment)
