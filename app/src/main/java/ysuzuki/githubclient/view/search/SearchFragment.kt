@@ -1,9 +1,9 @@
 package ysuzuki.githubclient.view.search
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.SearchView
 import android.view.*
 import ysuzuki.githubclient.MyApplication
 import ysuzuki.githubclient.R

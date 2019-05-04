@@ -1,10 +1,10 @@
 package ysuzuki.githubclient.view.search
 
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableField
-import android.databinding.ObservableList
-import android.databinding.ObservableList.OnListChangedCallback
-import android.support.v7.widget.SearchView
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableList
+import androidx.databinding.ObservableList.OnListChangedCallback
+import androidx.appcompat.widget.SearchView
 import io.reactivex.disposables.CompositeDisposable
 import ysuzuki.githubclient.data.QualifiersRepository
 import ysuzuki.githubclient.data.TrendingReposRepository

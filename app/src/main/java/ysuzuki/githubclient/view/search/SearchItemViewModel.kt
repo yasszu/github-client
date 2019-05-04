@@ -1,9 +1,9 @@
 package ysuzuki.githubclient.view.search
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import android.net.Uri
 import ysuzuki.githubclient.model.Repository
-import android.support.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsIntent
 import android.view.View
 
 

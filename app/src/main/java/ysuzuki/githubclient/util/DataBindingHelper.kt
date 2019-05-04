@@ -1,6 +1,6 @@
 package ysuzuki.githubclient.util
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
