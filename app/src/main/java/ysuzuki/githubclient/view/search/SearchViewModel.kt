@@ -1,135 +1,92 @@
 package ysuzuki.githubclient.view.search
 
-import androidx.databinding.ObservableArrayList
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableList
-import androidx.databinding.ObservableList.OnListChangedCallback
-import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import io.reactivex.disposables.CompositeDisposable
-import ysuzuki.githubclient.data.QualifiersRepository
+import ysuzuki.githubclient.data.QueriesRepository
 import ysuzuki.githubclient.data.TrendingReposRepository
 import ysuzuki.githubclient.model.Repository
-import ysuzuki.githubclient.model.SearchResult
-import java.lang.Exception
-import javax.inject.Inject
 
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
 class SearchViewModel constructor(
         val trendingReposRepository: TrendingReposRepository,
-        val qualifiersRepository: QualifiersRepository) : ViewModel() {
+        val queriesRepository: QueriesRepository) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    var onQueryTextSubmit: (q: String) -> Unit = {}
+    private var page = 1
 
-    val qualifiers: String
-        get() = qualifiersRepository.find()
+    private val _progress = MutableLiveData<Boolean>()
+    val progress: LiveData<Boolean>
+        get() = _progress
 
-    var page = 0
-        private set
+    private val _query = MutableLiveData<String>()
+    val query: LiveData<String>
+        get() = _query
 
-    val items: ObservableList<SearchItemViewModel> = ObservableArrayList()
-
-    val progress: ObservableField<Boolean> = ObservableField()
-
-    val queryTextListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(s: String): Boolean {
-            if (!s.isBlank()) {
-                resetItems(s)
-                onQueryTextSubmit(s)
+    private val repos: LiveData<List<SearchItemViewModel>> = Transformations
+            .switchMap(_query) { query ->
+                fetch(query, page)
             }
-            return false
+
+    val items = MediatorLiveData<List<SearchItemViewModel>>().also {
+        emptyList<SearchItemViewModel>()
+    }
+
+    init {
+        setQuery(queriesRepository.find())
+
+        items.addSource(repos) { latest ->
+            items.value?.also { current ->
+                items.value = combine(current, latest)
+            }
         }
-
-        override fun onQueryTextChange(s: String): Boolean = false
     }
 
-    private var listChangeCallback: OnListChangedCallback<ObservableList<SearchItemViewModel>>? = null
-
-    fun addListChangeCallback(callback: OnListChangedCallback<ObservableList<SearchItemViewModel>>) {
-        listChangeCallback = callback
-        items.addOnListChangedCallback(callback)
+    private fun combine(current: List<SearchItemViewModel>, latest: List<SearchItemViewModel>): List<SearchItemViewModel> {
+        val result = mutableListOf<SearchItemViewModel>()
+        current.forEach { item -> result.add(item) }
+        latest.forEach { item -> result.add(item) }
+        return result
     }
 
-    fun fetch() {
-        requestItems(qualifiers, page++)
+    fun setQuery(query: String) {
+        page = 1
+        queriesRepository.save(query)
+        items.value = emptyList()
+        _query.value = query
     }
 
-    fun resetItems(qualifiers: String) {
-        items.clear()
-        resetPage()
-        qualifiersRepository.save(qualifiers)
-        requestItems(qualifiers, page++)
+    fun fetchNextItems() {
+        page++
+        _query.value?.let { _query.value = it }
     }
 
     fun refreshItems() {
-        items.clear()
-        resetPage()
-        qualifiersRepository.clear()
-        requestItems(qualifiers, page++)
+        queriesRepository.clear()
+        setQuery(queriesRepository.find())
     }
 
-    private fun requestItems(qualifiers: String, page: Int) {
-        showProgressBar()
-        val disposable = trendingReposRepository
-                .find(qualifiers, page)
-                .subscribe(this::onFetchSuccess, this::onFetchError)
-        disposables.add(disposable)
+    private fun fetch(query: String, page: Int): LiveData<List<SearchItemViewModel>> {
+        _progress.value = true
+        return trendingReposRepository
+                .find(query, page)
+                .map { result ->
+                    _progress.value = false
+                    toItems(result.items)
+                }
+                .toFlowable()
+                .toLiveData()
     }
 
-    private fun onFetchSuccess(result: SearchResult) {
-        dismissProgressBar()
-        addViewModel(result.items)
-    }
-
-    private fun onFetchError(throwable: Throwable) {
-        dismissProgressBar()
-        throwable.printStackTrace()
-    }
-
-    private fun addViewModel(repositories: List<Repository>) {
-        repositories.forEach {
-            items.add(SearchItemViewModel(it))
-        }
-    }
-
-    private fun showProgressBar() {
-        progress.set(true)
-    }
-
-    private fun dismissProgressBar() {
-        progress.set(false)
-    }
-
-    private fun resetPage() {
-        page = 0
+    private fun toItems(repos: List<Repository>): List<SearchItemViewModel> {
+        return repos.map { repo -> SearchItemViewModel(repo) }
     }
 
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
-        listChangeCallback?.also { items.removeOnListChangedCallback(it) }
     }
 
-}
-
-class SearchViewModelFactory @Inject constructor(
-        val trendingReposRepository: TrendingReposRepository,
-        val qualifiersRepository: QualifiersRepository) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
-            try {
-                @Suppress("UNCHECKED_CAST")
-                return SearchViewModel(trendingReposRepository, qualifiersRepository) as T
-            } catch (e: Exception) {
-                throw RuntimeException(e)
-            }
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }

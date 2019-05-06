@@ -11,37 +11,15 @@ import ysuzuki.githubclient.databinding.ItemRepositoryBinding
  */
 class SearchViewAdapter(val viewModel: SearchViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    init {
-        viewModel.addListChangeCallback(object : ObservableList.OnListChangedCallback<ObservableList<SearchItemViewModel>>() {
-            override fun onChanged(contributorViewModels: ObservableList<SearchItemViewModel>) {
-                notifyDataSetChanged()
-            }
-
-            override fun onItemRangeChanged(contributorViewModels: ObservableList<SearchItemViewModel>, i: Int, i1: Int) {
-                notifyItemRangeChanged(i, i1)
-            }
-
-            override fun onItemRangeInserted(contributorViewModels: ObservableList<SearchItemViewModel>, i: Int, i1: Int) {
-                notifyItemRangeInserted(i, i1)
-            }
-
-            override fun onItemRangeMoved(contributorViewModels: ObservableList<SearchItemViewModel>, i: Int, i1: Int, i2: Int) {
-                notifyItemMoved(i, i1)
-            }
-
-            override fun onItemRangeRemoved(contributorViewModels: ObservableList<SearchItemViewModel>, i: Int, i1: Int) {
-                notifyItemRangeRemoved(i, i1)
-            }
-        })
-    }
+    val items: MutableList<SearchItemViewModel> = mutableListOf()
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewModel = viewModel.items[position]
+        val viewModel = items[position]
         val viewHolder = holder as SearchItemViewHolder
         viewHolder.bind(viewModel)
     }
 
-    override fun getItemCount(): Int = viewModel.items.size
+    override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)

@@ -12,9 +12,9 @@ import ysuzuki.githubclient.model.SearchResult
  */
 interface GitHubService {
 
-    @GET("orgs/{qualifiers}/repos")
+    @GET("orgs/{query}/repos")
     fun getRepos(
-            @Path("qualifiers") organization: String,
+            @Path("query") organization: String,
             @Query("page") page: Int,
             @Query("per_page") limit: Int): Single<List<Repository>>
 

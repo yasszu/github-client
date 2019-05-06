@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
 import android.view.*
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import ysuzuki.githubclient.MyApplication
 import ysuzuki.githubclient.R
@@ -34,16 +35,26 @@ class SearchFragment : Fragment() {
     }
 
     private val scrollListener: OnScrollListener by lazy {
-        OnScrollListener(layoutManager, { viewModel.fetch() })
+        OnScrollListener(layoutManager) {
+            viewModel.fetchNextItems()
+        }
+    }
+
+    private val queryTextListener = object : SearchView.OnQueryTextListener {
+
+        override fun onQueryTextSubmit(s: String): Boolean {
+            if (!s.isBlank()) {
+                viewModel.setQuery(s)
+                activity?.title = s
+            }
+            return false
+        }
+
+        override fun onQueryTextChange(s: String): Boolean = false
     }
 
     private val adapter: SearchViewAdapter by lazy {
         SearchViewAdapter(viewModel)
-    }
-
-    companion object {
-        val TAG: String = SearchFragment::class.java.simpleName
-        fun newInstance() = SearchFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,15 +66,10 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.fetch()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         requireActivity().menuInflater.inflate(R.menu.main, menu)
         searchView = (menu?.findItem(R.id.search)?.actionView as SearchView).apply {
-            setOnQueryTextListener(viewModel.queryTextListener)
+            setOnQueryTextListener(queryTextListener)
             setIconifiedByDefault(true)
             queryHint = resources.getString(R.string.search_hint)
         }
@@ -77,22 +83,33 @@ class SearchFragment : Fragment() {
 
     private fun refreshItems(): Boolean {
         viewModel.refreshItems()
-        activity?.title = viewModel.qualifiers
         return true
     }
 
     private fun initViewModel() {
         binding.viewModel = viewModel
-        viewModel.onQueryTextSubmit = { query ->
+        binding.lifecycleOwner = this
+
+        viewModel.items.observe(viewLifecycleOwner, Observer { items ->
+            adapter.items.clear()
+            adapter.items.addAll(items)
+            adapter.notifyDataSetChanged()
+        })
+
+        viewModel.query.observe(viewLifecycleOwner, Observer { query ->
             activity?.title = query
-        }
+        })
     }
 
     private fun initRecyclerView() {
-        activity?.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnScrollListener(scrollListener)
+    }
+
+    companion object {
+        val TAG: String = SearchFragment::class.java.simpleName
+        fun newInstance() = SearchFragment()
     }
 
 }
