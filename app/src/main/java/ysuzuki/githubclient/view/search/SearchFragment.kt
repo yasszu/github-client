@@ -1,10 +1,11 @@
 package ysuzuki.githubclient.view.search
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.SearchView
 import android.view.*
+import androidx.lifecycle.ViewModelProviders
 import ysuzuki.githubclient.MyApplication
 import ysuzuki.githubclient.R
 import ysuzuki.githubclient.databinding.FragmentSearchBinding
@@ -18,27 +19,35 @@ import javax.inject.Inject
 class SearchFragment : Fragment() {
 
     @Inject
-    lateinit var viewModel: SearchViewModel
+    lateinit var viewModelProvider: SearchViewModelFactory
 
-    lateinit var binding: FragmentSearchBinding
+    val viewModel: SearchViewModel by lazy {
+        ViewModelProviders.of(this, viewModelProvider).get(SearchViewModel::class.java)
+    }
 
-    lateinit var searchView: SearchView
+    private lateinit var binding: FragmentSearchBinding
 
-    val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
+    private lateinit var searchView: SearchView
 
-    val scrollListener: OnScrollListener by lazy {
+    private val layoutManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(context)
+    }
+
+    private val scrollListener: OnScrollListener by lazy {
         OnScrollListener(layoutManager, { viewModel.fetch() })
     }
 
-    val adapter: SearchViewAdapter by lazy { SearchViewAdapter(viewModel) }
+    private val adapter: SearchViewAdapter by lazy {
+        SearchViewAdapter(viewModel)
+    }
 
     companion object {
         val TAG: String = SearchFragment::class.java.simpleName
         fun newInstance() = SearchFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        (context.applicationContext as MyApplication).appComponent.inject(this)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        (context?.applicationContext as MyApplication).appComponent.inject(this)
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         initViewModel()
@@ -46,18 +55,13 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetch()
     }
 
-    override fun onDetach() {
-        viewModel.destroy()
-        super.onDetach()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        activity.menuInflater.inflate(R.menu.main, menu)
+        requireActivity().menuInflater.inflate(R.menu.main, menu)
         searchView = (menu?.findItem(R.id.search)?.actionView as SearchView).apply {
             setOnQueryTextListener(viewModel.queryTextListener)
             setIconifiedByDefault(true)
@@ -71,21 +75,21 @@ class SearchFragment : Fragment() {
         else -> true
     }
 
-    fun refreshItems(): Boolean {
+    private fun refreshItems(): Boolean {
         viewModel.refreshItems()
-        activity.title = viewModel.qualifiers
+        activity?.title = viewModel.qualifiers
         return true
     }
 
-    fun initViewModel() {
+    private fun initViewModel() {
         binding.viewModel = viewModel
         viewModel.onQueryTextSubmit = { query ->
-            activity.title = query
+            activity?.title = query
         }
     }
 
-    fun initRecyclerView() {
-        activity.title = viewModel.qualifiers
+    private fun initRecyclerView() {
+        activity?.title = viewModel.qualifiers
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnScrollListener(scrollListener)

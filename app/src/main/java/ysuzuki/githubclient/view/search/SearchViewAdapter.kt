@@ -1,7 +1,7 @@
 package ysuzuki.githubclient.view.search
 
-import android.databinding.ObservableList
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.ObservableList
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import ysuzuki.githubclient.databinding.ItemRepositoryBinding
@@ -35,7 +35,7 @@ class SearchViewAdapter(val viewModel: SearchViewModel) : RecyclerView.Adapter<R
         })
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewModel = viewModel.items[position]
         val viewHolder = holder as SearchItemViewHolder
         viewHolder.bind(viewModel)
@@ -43,8 +43,8 @@ class SearchViewAdapter(val viewModel: SearchViewModel) : RecyclerView.Adapter<R
 
     override fun getItemCount(): Int = viewModel.items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         val binding = ItemRepositoryBinding.inflate(inflater, parent, false)
         return SearchItemViewHolder(binding)
     }

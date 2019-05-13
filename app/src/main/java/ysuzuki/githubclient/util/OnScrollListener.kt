@@ -1,7 +1,7 @@
 package ysuzuki.githubclient.util
 
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Set this listener to RecyclerView#addOnScrollListener
@@ -23,7 +23,7 @@ class OnScrollListener(val mLayoutManager: LinearLayoutManager,
     var mLoading = true
         private set
 
-    override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         onScrolled()
         val visibleItemCount = mLayoutManager.childCount
