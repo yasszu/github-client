@@ -11,10 +11,10 @@ import javax.inject.Singleton
  *
  * See https://developer.github.com/v3/search/#search-search
  */
-@Singleton
 class TrendingReposDataSource @Inject constructor(val service: GitHubService) {
 
     private val SORT = "stars"
+
     private val ORDER = "desc"
 
     fun find(query: String, page: Int, limit: Int): Single<SearchResult>

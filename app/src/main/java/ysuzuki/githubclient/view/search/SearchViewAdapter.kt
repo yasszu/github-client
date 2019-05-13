@@ -1,9 +1,8 @@
 package ysuzuki.githubclient.view.search
 
-import androidx.databinding.ObservableList
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import ysuzuki.githubclient.databinding.ItemRepositoryBinding
 
 /**

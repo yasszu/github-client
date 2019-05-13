@@ -1,6 +1,6 @@
 package ysuzuki.githubclient.api.service
 
-import ysuzuki.githubclient.model.Repository
+import ysuzuki.githubclient.model.Repo
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,7 +16,7 @@ interface GitHubService {
     fun getRepos(
             @Path("query") organization: String,
             @Query("page") page: Int,
-            @Query("per_page") limit: Int): Single<List<Repository>>
+            @Query("per_page") limit: Int): Single<List<Repo>>
 
     @GET("search/repositories")
     fun getTrending(

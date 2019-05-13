@@ -2,7 +2,7 @@ package ysuzuki.githubclient.view.search
 
 import androidx.databinding.ObservableField
 import android.net.Uri
-import ysuzuki.githubclient.model.Repository
+import ysuzuki.githubclient.model.Repo
 import androidx.browser.customtabs.CustomTabsIntent
 import android.view.View
 
@@ -10,7 +10,7 @@ import android.view.View
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class SearchItemViewModel(repository: Repository) {
+class SearchItemViewModel(repo: Repo) {
 
     val title: ObservableField<String> = ObservableField()
     val description: ObservableField<String> = ObservableField()
@@ -20,12 +20,12 @@ class SearchItemViewModel(repository: Repository) {
     val stars: ObservableField<String> = ObservableField()
 
     init {
-        title.set(repository.name)
-        description.set(repository.description)
-        avatar.set(repository.owner.avatar_url)
-        language.set(repository.language)
-        url.set(repository.url)
-        stars.set(repository.starts.toString())
+        title.set(repo.name)
+        description.set(repo.description)
+        avatar.set(repo.owner.avatar_url)
+        language.set(repo.language)
+        url.set(repo.url)
+        stars.set(repo.starts.toString())
     }
 
     fun openLink(v: View) {

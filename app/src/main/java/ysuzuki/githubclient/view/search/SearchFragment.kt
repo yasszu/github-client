@@ -30,9 +30,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var searchView: SearchView
 
-    private val layoutManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(context)
-    }
+    private val layoutManager: LinearLayoutManager by lazy { LinearLayoutManager(context) }
 
     private val scrollListener: OnScrollListener by lazy {
         OnScrollListener(layoutManager) {
@@ -45,7 +43,6 @@ class SearchFragment : Fragment() {
         override fun onQueryTextSubmit(s: String): Boolean {
             if (!s.isBlank()) {
                 viewModel.setQuery(s)
-                activity?.title = s
             }
             return false
         }
