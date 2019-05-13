@@ -1,7 +1,6 @@
 package ysuzuki.githubclient.ui.search
 
 import androidx.lifecycle.*
-import io.reactivex.disposables.CompositeDisposable
 import ysuzuki.githubclient.data.QueryRepository
 import ysuzuki.githubclient.data.TrendingReposRepository
 import ysuzuki.githubclient.model.Repo
@@ -12,8 +11,6 @@ import ysuzuki.githubclient.model.Repo
 class SearchViewModel constructor(
         val trendingReposRepository: TrendingReposRepository,
         val queryRepository: QueryRepository) : ViewModel() {
-
-    private val disposables = CompositeDisposable()
 
     private var page = 1
 
@@ -30,13 +27,14 @@ class SearchViewModel constructor(
                 fetch(query, page)
             }
 
-    val items = MediatorLiveData<List<SearchItemViewModel>>().also {
-        emptyList<SearchItemViewModel>()
-    }
+    val items = MediatorLiveData<List<SearchItemViewModel>>().apply { value = emptyList() }
 
     init {
         setQuery(queryRepository.find())
+        initItems()
+    }
 
+    private fun initItems() {
         items.addSource(repos) { latest ->
             items.value?.also { current ->
                 items.value = combine(current, latest)
@@ -45,10 +43,10 @@ class SearchViewModel constructor(
     }
 
     private fun combine(current: List<SearchItemViewModel>, latest: List<SearchItemViewModel>): List<SearchItemViewModel> {
-        val result = mutableListOf<SearchItemViewModel>()
-        current.forEach { item -> result.add(item) }
-        latest.forEach { item -> result.add(item) }
-        return result
+        return mutableListOf<SearchItemViewModel>().apply {
+            addAll(current)
+            addAll(latest)
+        }
     }
 
     fun setQuery(query: String) {
@@ -82,11 +80,6 @@ class SearchViewModel constructor(
 
     private fun toItems(repos: List<Repo>): List<SearchItemViewModel> {
         return repos.map { repo -> SearchItemViewModel(repo) }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
     }
 
 }

@@ -57,6 +57,8 @@ class SearchFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         (context?.applicationContext as MyApplication).appComponent.inject(this)
         binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         setHasOptionsMenu(true)
         initViewModel()
         initRecyclerView()
@@ -84,9 +86,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
-
         viewModel.items.observe(viewLifecycleOwner, Observer { items ->
             adapter.items.clear()
             adapter.items.addAll(items)
