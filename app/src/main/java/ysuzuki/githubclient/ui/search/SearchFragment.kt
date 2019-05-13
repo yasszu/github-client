@@ -1,4 +1,4 @@
-package ysuzuki.githubclient.view.search
+package ysuzuki.githubclient.ui.search
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

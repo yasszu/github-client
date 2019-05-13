@@ -1,4 +1,4 @@
-package ysuzuki.githubclient.view.search
+package ysuzuki.githubclient.ui.search
 
 import androidx.lifecycle.*
 import io.reactivex.disposables.CompositeDisposable

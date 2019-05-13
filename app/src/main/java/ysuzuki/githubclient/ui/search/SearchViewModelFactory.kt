@@ -1,4 +1,4 @@
-package ysuzuki.githubclient.view.search
+package ysuzuki.githubclient.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
