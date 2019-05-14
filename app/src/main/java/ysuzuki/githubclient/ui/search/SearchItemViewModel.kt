@@ -1,10 +1,7 @@
 package ysuzuki.githubclient.ui.search
 
 import androidx.databinding.ObservableField
-import android.net.Uri
 import ysuzuki.githubclient.model.Repo
-import androidx.browser.customtabs.CustomTabsIntent
-import android.view.View
 
 
 /**
@@ -26,12 +23,6 @@ class SearchItemViewModel(repo: Repo) {
         language.set(repo.language)
         url.set(repo.url)
         stars.set(repo.starts.toString())
-    }
-
-    fun openLink(v: View) {
-        val builder = CustomTabsIntent.Builder()
-        val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(v.context, Uri.parse(url.get()))
     }
 
 }

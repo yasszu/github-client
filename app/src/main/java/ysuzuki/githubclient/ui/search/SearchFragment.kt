@@ -1,10 +1,12 @@
 package ysuzuki.githubclient.ui.search
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
 import android.view.*
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import ysuzuki.githubclient.MyApplication
@@ -51,7 +53,7 @@ class SearchFragment : Fragment() {
     }
 
     private val adapter: SearchViewAdapter by lazy {
-        SearchViewAdapter(viewModel)
+        SearchViewAdapter(viewModel) { item -> openLink(item) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -87,9 +89,7 @@ class SearchFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel.items.observe(viewLifecycleOwner, Observer { items ->
-            adapter.items.clear()
-            adapter.items.addAll(items)
-            adapter.notifyDataSetChanged()
+            adapter.setItems(items)
         })
 
         viewModel.query.observe(viewLifecycleOwner, Observer { query ->
@@ -101,6 +101,12 @@ class SearchFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addOnScrollListener(scrollListener)
+    }
+
+    private fun openLink(item: SearchItemViewModel) {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(context, Uri.parse(item.url.get()))
     }
 
     companion object {
