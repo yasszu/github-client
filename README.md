@@ -1,5 +1,4 @@
 # Github client
-* Kotlin + DataBinding + RecyclerView
 
 ## Feature
 * Search trending GitHub repositories.  
@@ -8,6 +7,7 @@
 
 ## Libararies
 * [DataBinding](https://developer.android.com/topic/libraries/data-binding/index.html)
+* [Android Architecture Components](https://developer.android.com/topic/libraries/architecture)  
 * [Dagger2](https://google.github.io/dagger/)
 * [Picasso](http://square.github.io/picasso/)
 * [Retrofit2](http://square.github.io/retrofit/)
@@ -15,11 +15,10 @@
 * [Moshi](https://github.com/square/moshi)
 
 ## Prerequisites
-* Android SDK 25
-* Android Build Tool 25.0.2
-* Android Support Repository 25.2.0
-* Android Plugin for Gradle 2.3.3
-* Kotlin v1.1.4-3
+* Android SDK 28
+* Android Build Tool 28.0.3
+* Android Plugin for Gradle 3.4.0
+* Kotlin 1.3.20
 
 ## Getting Started
-Build with Android Studio 2.x
+Build with Android Studio 3.4
