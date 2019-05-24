@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-data class Repository(
+data class Repo(
         val name: String = "",
         val full_name: String = "",
         val description: String = "",

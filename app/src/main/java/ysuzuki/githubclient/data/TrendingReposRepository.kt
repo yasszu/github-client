@@ -6,16 +6,18 @@ import io.reactivex.schedulers.Schedulers
 import ysuzuki.githubclient.data.remote.TrendingReposDataSource
 import ysuzuki.githubclient.model.SearchResult
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Yasuhiro Suzuki on 2017/05/21.
  */
+@Singleton
 class TrendingReposRepository @Inject constructor(val dataSource: TrendingReposDataSource) {
 
-    private val LIMIT = 30
+    private val LIMIT = 10
 
-    fun find(qualifiers: String, page: Int): Single<SearchResult> = dataSource
-            .find(qualifiers, page, LIMIT)
+    fun find(query: String, page: Int): Single<SearchResult> = dataSource
+            .find(query, page, LIMIT)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

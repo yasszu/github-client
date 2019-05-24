@@ -1,4 +1,4 @@
-package ysuzuki.githubclient.view
+package ysuzuki.githubclient.ui
 
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ysuzuki.githubclient.R
 import ysuzuki.githubclient.databinding.ActivityMainBinding
 import ysuzuki.githubclient.extention.addFragment
-import ysuzuki.githubclient.view.search.SearchFragment
+import ysuzuki.githubclient.ui.search.SearchFragment
 
 
 class MainActivity : AppCompatActivity() {

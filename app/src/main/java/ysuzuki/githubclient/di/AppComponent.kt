@@ -1,7 +1,7 @@
 package ysuzuki.githubclient.di
 
 import dagger.Component
-import ysuzuki.githubclient.view.search.SearchFragment
+import ysuzuki.githubclient.ui.search.SearchFragment
 import javax.inject.Singleton
 
 /**

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="ysuzuki.githubclient.view.search.SearchViewModel" />
+            type="ysuzuki.githubclient.ui.search.SearchViewModel" />
     </data>
 
     <RelativeLayout
