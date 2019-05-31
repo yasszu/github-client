@@ -17,10 +17,7 @@ object DataBindingHelper {
         if (url.isNullOrBlank()) {
             view.setImageDrawable(placeholder)
         } else {
-            Picasso.with(view.context)
-                    .load(url)
-                    .error(placeholder)
-                    .into(view)
+            Picasso.get().load(url).error(placeholder).into(view)
         }
     }
 

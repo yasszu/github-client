@@ -7,8 +7,8 @@ import ysuzuki.githubclient.data.TrendingReposRepository
 import javax.inject.Inject
 
 class SearchViewModelFactory @Inject constructor(
-        val trendingReposRepository: TrendingReposRepository,
-        val queryRepository: QueryRepository) : ViewModelProvider.Factory {
+        private val trendingReposRepository: TrendingReposRepository,
+        private val queryRepository: QueryRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {

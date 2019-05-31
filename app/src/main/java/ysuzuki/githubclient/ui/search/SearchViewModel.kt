@@ -9,8 +9,8 @@ import ysuzuki.githubclient.model.Repo
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
 class SearchViewModel constructor(
-        val trendingReposRepository: TrendingReposRepository,
-        val queryRepository: QueryRepository) : ViewModel() {
+        private val trendingReposRepository: TrendingReposRepository,
+        private val queryRepository: QueryRepository) : ViewModel() {
 
     private var page = 1
 
@@ -30,16 +30,27 @@ class SearchViewModel constructor(
     val items = MediatorLiveData<List<SearchItemViewModel>>().apply { value = emptyList() }
 
     init {
+        activateItemsLiveDate()
         setQuery(queryRepository.find())
-        initItems()
     }
 
-    private fun initItems() {
+    private fun activateItemsLiveDate() {
         items.addSource(repos) { latest ->
-            items.value?.also { current ->
+            appendItems(latest)
+        }
+    }
+
+    private fun appendItems(latest: List<SearchItemViewModel>) {
+        items.value?.also { current ->
+            if (shouldAppend(current, latest)) {
                 items.value = combine(current, latest)
             }
         }
+    }
+
+    private fun shouldAppend(current: List<SearchItemViewModel>, latest: List<SearchItemViewModel>): Boolean {
+        val maxAmount = page * trendingReposRepository.LIMIT
+        return (current.size + latest.size) <= maxAmount
     }
 
     private fun combine(current: List<SearchItemViewModel>, latest: List<SearchItemViewModel>): List<SearchItemViewModel> {

@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class TrendingReposRepository @Inject constructor(val dataSource: TrendingReposDataSource) {
 
-    private val LIMIT = 10
+    val LIMIT = 10
 
     fun find(query: String, page: Int): Single<SearchResult> = dataSource
             .find(query, page, LIMIT)
