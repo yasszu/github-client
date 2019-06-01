@@ -49,7 +49,7 @@ class SearchViewModel constructor(
     }
 
     private fun shouldAppend(current: List<SearchItemViewModel>, latest: List<SearchItemViewModel>): Boolean {
-        val maxAmount = page * trendingReposRepository.LIMIT
+        val maxAmount = page * TrendingReposRepository.LIMIT
         return (current.size + latest.size) <= maxAmount
     }
 

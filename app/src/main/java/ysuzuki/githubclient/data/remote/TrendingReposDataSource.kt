@@ -13,9 +13,10 @@ import javax.inject.Singleton
  */
 class TrendingReposDataSource @Inject constructor(val service: GitHubService) {
 
-    private val SORT = "stars"
-
-    private val ORDER = "desc"
+    companion object {
+        const val SORT = "stars"
+        const val ORDER = "desc"
+    }
 
     fun find(query: String, page: Int, limit: Int): Single<SearchResult>
             = service.getTrending(query, SORT, ORDER, page, limit)
