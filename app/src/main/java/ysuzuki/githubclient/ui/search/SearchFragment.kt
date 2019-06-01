@@ -44,6 +44,7 @@ class SearchFragment : Fragment() {
 
         override fun onQueryTextSubmit(s: String): Boolean {
             if (!s.isBlank()) {
+                scrollListener.clear()
                 viewModel.setQuery(s)
             }
             return false
@@ -83,14 +84,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun refreshItems(): Boolean {
-        viewModel.refreshItems()
         scrollListener.clear()
+        viewModel.refreshItems()
         return true
     }
 
     private fun initViewModel() {
-        viewModel.items.observe(viewLifecycleOwner, Observer { items ->
-            items?.let { adapter.submitList(it) }
+        viewModel.repos.observe(viewLifecycleOwner, Observer { items ->
+            items?.let {
+                adapter.submitList(it)
+            }
         })
         viewModel.query.observe(viewLifecycleOwner, Observer { query ->
             activity?.title = query

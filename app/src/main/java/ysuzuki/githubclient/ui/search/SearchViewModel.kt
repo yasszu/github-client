@@ -22,48 +22,20 @@ class SearchViewModel constructor(
     val query: LiveData<String>
         get() = _query
 
-    private val repos: LiveData<List<SearchItemViewModel>> = Transformations
+    private val _repos = MutableLiveData<List<SearchItemViewModel>>()
+    val repos: LiveData<List<SearchItemViewModel>> = Transformations
             .switchMap(_query) { query ->
                 fetch(query, page)
             }
 
-    val items = MediatorLiveData<List<SearchItemViewModel>>().apply { value = emptyList() }
-
     init {
-        activateItemsLiveDate()
         setQuery(queryRepository.find())
-    }
-
-    private fun activateItemsLiveDate() {
-        items.addSource(repos) { latest ->
-            appendItems(latest)
-        }
-    }
-
-    private fun appendItems(latest: List<SearchItemViewModel>) {
-        items.value?.also { current ->
-            if (shouldAppend(current, latest)) {
-                items.value = combine(current, latest)
-            }
-        }
-    }
-
-    private fun shouldAppend(current: List<SearchItemViewModel>, latest: List<SearchItemViewModel>): Boolean {
-        val maxAmount = page * TrendingReposRepository.LIMIT
-        return (current.size + latest.size) <= maxAmount
-    }
-
-    private fun combine(current: List<SearchItemViewModel>, latest: List<SearchItemViewModel>): List<SearchItemViewModel> {
-        return mutableListOf<SearchItemViewModel>().apply {
-            addAll(current)
-            addAll(latest)
-        }
     }
 
     fun setQuery(query: String) {
         page = 1
         queryRepository.save(query)
-        items.value = emptyList()
+        _repos.value = emptyList()
         _query.value = query
     }
 
@@ -82,11 +54,22 @@ class SearchViewModel constructor(
         return trendingReposRepository
                 .find(query, page)
                 .map { result ->
+                    val current = _repos.value ?: emptyList()
+                    val latest = toItems(result.items)
+                    val newValue = combine(current, latest)
+                    _repos.value = newValue
                     _progress.value = false
-                    toItems(result.items)
+                    newValue
                 }
                 .toFlowable()
                 .toLiveData()
+    }
+
+    private fun <T> combine(current: List<T>, latest: List<T>): List<T> {
+        return mutableListOf<T>().apply {
+            addAll(current)
+            addAll(latest)
+        }
     }
 
     private fun toItems(repos: List<Repo>): List<SearchItemViewModel> {
