@@ -24,5 +24,5 @@ interface GitHubService {
             @Query("sort") sort: String,
             @Query("order") order: String,
             @Query("page") page: Int,
-            @Query("limit") limit: Int): Single<SearchResult>
+            @Query("per_page") limit: Int): Single<SearchResult>
 }

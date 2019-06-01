@@ -7,7 +7,7 @@ import ysuzuki.githubclient.model.Repo
 /**
  * Created by Yasuhiro Suzuki on 2017/03/30.
  */
-class SearchItemViewModel(repo: Repo) {
+class SearchItemViewModel(val repo: Repo) {
 
     val title: ObservableField<String> = ObservableField()
     val description: ObservableField<String> = ObservableField()

@@ -2,13 +2,13 @@ package ysuzuki.githubclient.ui.search
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.appcompat.widget.SearchView
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import ysuzuki.githubclient.MyApplication
 import ysuzuki.githubclient.R
 import ysuzuki.githubclient.databinding.FragmentSearchBinding
@@ -24,7 +24,7 @@ class SearchFragment : Fragment() {
     @Inject
     lateinit var viewModelProvider: SearchViewModelFactory
 
-    val viewModel: SearchViewModel by lazy {
+    private val viewModel: SearchViewModel by lazy {
         ViewModelProviders.of(this, viewModelProvider).get(SearchViewModel::class.java)
     }
 
@@ -52,8 +52,8 @@ class SearchFragment : Fragment() {
         override fun onQueryTextChange(s: String): Boolean = false
     }
 
-    private val adapter: SearchViewAdapter by lazy {
-        SearchViewAdapter(viewModel) { item -> openLink(item) }
+    private val adapter: SearchItemAdapter by lazy {
+        SearchItemAdapter { item -> openLink(item) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,14 +84,14 @@ class SearchFragment : Fragment() {
 
     private fun refreshItems(): Boolean {
         viewModel.refreshItems()
+        scrollListener.clear()
         return true
     }
 
     private fun initViewModel() {
         viewModel.items.observe(viewLifecycleOwner, Observer { items ->
-            adapter.setItems(items)
+            items?.let { adapter.submitList(it) }
         })
-
         viewModel.query.observe(viewLifecycleOwner, Observer { query ->
             activity?.title = query
         })
