@@ -15,14 +15,15 @@ class SearchViewModel constructor(
     private var page = 1
 
     private val _progress = MutableLiveData<Boolean>()
-    val progress: LiveData<Boolean>
-        get() = _progress
 
     private val _query = MutableLiveData<String>()
-    val query: LiveData<String>
-        get() = _query
 
     private val _repos = MutableLiveData<List<SearchItemViewModel>>()
+
+    val progress: LiveData<Boolean> = _progress
+
+    val query: LiveData<String> = _query
+
     val repos: LiveData<List<SearchItemViewModel>> = Transformations
             .switchMap(_query) { query ->
                 fetch(query, page)
